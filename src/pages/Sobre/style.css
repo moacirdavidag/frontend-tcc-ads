@@ -1,0 +1,6 @@
+.sobre_content {
+    width: 100%;
+    height: calc(100vh - 120px);
+    background-color: #FFFFFF;
+    padding: 80px;
+}

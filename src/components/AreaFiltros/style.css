@@ -1,0 +1,66 @@
+.wrapper_filtros {
+    width: 1000px;
+    height: 130px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    margin: 55px 175px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    padding: 20px;
+}
+
+.componente {
+    width: 200px;
+}
+
+.enfase {
+    font-weight: bold;
+}
+
+.input_icon_wrapper {
+    position: relative;
+}
+
+.border_radius {
+    border-radius: 50px;
+}
+
+.input {
+    width: 100%;
+    height: 40px;
+    margin-top: 13px;
+    background: #FFFFFF;
+    font-family: "Open Sans", sans-serif;
+    font-size: 18px;
+    color: #6F726F;
+    padding-left: 15px;
+    outline: none;
+    border: 1px solid #D5D7D5;
+}
+
+.input_icon {
+    position: absolute;
+    right: 15px;
+    top: 22px;
+    color: #D5D7D5;
+}
+
+.btn_filtro {
+    margin-top: 35px;
+    background-color: #12A53B;
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 18px;
+    border-radius: 10px;
+    width: 220px;
+    height: 45px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+.btn_filtro:hover {
+    transition: 300ms;
+    background-color: #17D44C;
+}

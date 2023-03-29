@@ -1,0 +1,21 @@
+header {
+    width: 100%;
+    height: 120px;
+    background-color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border-bottom: 2px solid #D8DFDA;
+}
+
+.nav_links ul li {
+    font-size: 22px;
+    font-weight: 600;
+    display: inline;
+    padding: 0 25px;
+}
+
+.logo_img {
+    max-width: 60px;
+    height: auto;
+}
