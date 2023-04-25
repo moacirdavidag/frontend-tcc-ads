@@ -5,6 +5,7 @@
     align-items:flex-start;
     justify-content: center;
     flex-direction: column;
+    padding-left: 55px;
 }
 
 .enfase {

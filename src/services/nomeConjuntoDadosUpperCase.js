@@ -1,0 +1,1 @@
+export const nomeCojuntoDados = (nome) => nome.charAt(0).toUpperCase() + nome.slice(1);

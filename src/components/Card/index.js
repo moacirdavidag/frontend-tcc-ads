@@ -5,6 +5,8 @@ import { IoSettingsSharp, IoSchool,
   IoLaptopOutline, IoDocumentSharp,
   IoPersonSharp } from "react-icons/io5";
 
+import { Link } from 'react-router-dom';
+
 export const Card = ({titulo, quantidade}) => {
   const [icone, setIcone] = useState(titulo);
   switch(icone) {
@@ -28,10 +30,12 @@ export const Card = ({titulo, quantidade}) => {
       break;
   }
   return (
-    <div className="card">
-        <span className='icon'>{icone}</span>
-        <h3 className="titulo_card">{titulo}</h3>
-        <p>{quantidade} Conjunto de Dados</p>
-    </div>
+    <Link to={`/conjuntos/${String(titulo).normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase()}`}>
+      <div className="card">
+          <span className='icon'>{icone}</span>
+          <h3 className="titulo_card">{titulo}</h3>
+          <p>{quantidade} Conjunto de Dados</p>
+      </div>
+    </Link>
   )
 }

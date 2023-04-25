@@ -7,6 +7,9 @@ import { Campos } from '../../components/Campos';
 import { useQueries } from '../../hooks/useQueries';
 import { useParams } from 'react-router-dom';
 
+import { retornarConjuntoDados } from '../../services/metadadosConjunto';
+import { nomeCojuntoDados } from '../../services/nomeConjuntoDadosUpperCase';
+
 export const ViewDados = () => {
 
   const [dados, setDados] = useState([]);
@@ -15,24 +18,25 @@ export const ViewDados = () => {
 
   const { conjunto: nomeConjuntoDeDados } = useParams();
 
-  let response = useQueries(consulta, filtros);
+  console.log(nomeConjuntoDeDados);
 
- 
+  const conjuntoDados = retornarConjuntoDados(nomeConjuntoDeDados)[0];
+
 
   useEffect(() => {
-    document.title = `${nomeConjuntoDeDados} - Conjunto de Dados - Dados IFPB`;
+    document.title = `${nomeCojuntoDados(nomeConjuntoDeDados)} - Conjunto de Dados - Dados IFPB`;
   }, [])
 
 
   return (
     <>
       <div className="wrapper_metadados">
-        <Metadados titulo={nomeConjuntoDeDados}
-          fonte={"http://suap.ifpb.edu.br/api/ensino/alunos/v1/"}
-          autor={"Diretoria-Geral do IFPB"}
-          mantenedor={"dti@ifpb.edu.br"}
-          dataAtualizacao={"4 de Setembro de 2019, 20:41 (UTC-3:00)"}
-          dataCriacao={"1 de Abril de 2019, 12:27 (UTC-3:00)"}
+        <Metadados titulo={nomeCojuntoDados(nomeConjuntoDeDados)}
+          fonte={conjuntoDados.fonte}
+          autor={conjuntoDados.autor}
+          mantenedor={conjuntoDados.mantenedor}
+          dataAtualizacao={conjuntoDados.ultima_atualizacao}
+          dataCriacao={conjuntoDados.data_criacao}
         />
       </div>
       <AreaFiltros />

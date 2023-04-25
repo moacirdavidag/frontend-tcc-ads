@@ -10,11 +10,12 @@ import { ConjuntoDados } from "./pages/ConjuntoDados";
 function App() {
   return (
     <>
-      <Header />
       <Router>
+        <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/dados" element={<ConjuntoDados />} />
+          <Route path="/conjuntos" element={<ConjuntoDados />} />
+          <Route path="/conjuntos/:grupo" element={<ConjuntoDados />} />
           <Route path="/dados/:conjunto" element={<ViewDados />} />
           <Route path="/sobre" element={<Sobre />} />
         </Routes>
