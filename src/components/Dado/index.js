@@ -1,13 +1,13 @@
 import React from 'react';
 import "./style.css";
 
-export const Dado = () => {
+export const Dado = (...propriedades) => {
   return (
     <div className="dado">
         <div className="conteudo scrollbar">
-            <p><span className="strong">Nome: </span> Pessoa Tal</p>
-            <p><span className="strong">Nome: </span> Pessoa Tal</p>
-            <p><span className="strong">Nome: </span> Pessoa Tal</p>
+            {propriedades.map(propriedade => {
+                <p><span className="strong">{propriedade}</span> Pessoa Tal</p>
+            })}
         </div>
     </div>
   )

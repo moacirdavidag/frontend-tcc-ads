@@ -9,23 +9,51 @@ import { useParams } from 'react-router-dom';
 
 import { retornarConjuntoDados } from '../../services/metadadosConjunto';
 import { nomeCojuntoDados } from '../../services/nomeConjuntoDadosUpperCase';
+import { url } from '../../services/api';
 
 export const ViewDados = () => {
 
-  const [dados, setDados] = useState([]);
-  const [consulta, setConsulta] = useState("bolsas");
-  const [filtros, setFiltros] = useState(['aluno']);
-
   const { conjunto: nomeConjuntoDeDados } = useParams();
 
-  console.log(nomeConjuntoDeDados);
+  const [dados, setDados] = useState([]);
+  const [consulta, setConsulta] = useState(nomeConjuntoDeDados);
+  const [filtros, setFiltros] = useState(["uuid"]);
 
   const conjuntoDados = retornarConjuntoDados(nomeConjuntoDeDados)[0];
-
 
   useEffect(() => {
     document.title = `${nomeCojuntoDados(nomeConjuntoDeDados)} - Conjunto de Dados - Dados IFPB`;
   }, [])
+
+  const handleQuery = async (consulta, ...filtros) => {
+    try {
+      const query = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: `
+          query {
+            ${consulta} {
+              ${filtros.toString()}
+            }
+          }
+        `
+        })
+      });
+      const res = await query.json();
+      setDados(res.data[`${consulta}`]);
+      return res;
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+
+  useEffect(() => {
+    handleQuery(consulta, filtros);
+  }, [consulta, filtros])
 
 
   return (
@@ -47,8 +75,11 @@ export const ViewDados = () => {
           </div>
         </div>
         <div className="dados">
-          <Dado />
-          <Dado />
+          {
+            dados.map((dado) => {
+              return <Dado key={dado.uuid} propriedades={Object.keys(dado)} />
+            })
+          }
         </div>
       </div>
     </>
