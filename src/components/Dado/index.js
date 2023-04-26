@@ -1,14 +1,25 @@
 import React from 'react';
 import "./style.css";
 
-export const Dado = (...propriedades) => {
+export const Dado = (...propriedadesValores) => {
+
+  const propriedades = propriedadesValores[0]["propriedadesValores"];
+
+
   return (
     <div className="dado">
-        <div className="conteudo scrollbar">
-            {propriedades.map(propriedade => {
-                <p><span className="strong">{propriedade}</span> Pessoa Tal</p>
-            })}
-        </div>
+      <div className="conteudo scrollbar">
+        {
+          propriedades.map(propriedade => {
+            console.log(`PROPRIEDADE = ${propriedade}`)
+            return(
+              <>
+                  <p><span className="strong">{propriedade[0]}:</span> {propriedade[1]}</p>                
+              </>
+            )
+          })
+        }
+      </div>
     </div>
   )
 }

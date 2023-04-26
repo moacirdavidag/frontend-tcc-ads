@@ -28,3 +28,31 @@ p {
     justify-content: center;
 }
 
+.loader-wrapper {
+    margin-top: 20px;
+    width: 730px;
+    height: 120px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+.loader {
+    animation: 1s is-rotating infinite;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #6F726F;
+    border-top-color: #12A53B;
+    border-radius: 50%;
+}
+
+@keyframes is-rotating {
+    to {
+        transform: rotate(1turn);
+    }
+}

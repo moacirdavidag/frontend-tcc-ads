@@ -4,7 +4,6 @@ import { Metadados } from '../../components/Metadadados';
 import { AreaFiltros } from '../../components/AreaFiltros';
 import { Dado } from '../../components/Dado';
 import { Campos } from '../../components/Campos';
-import { useQueries } from '../../hooks/useQueries';
 import { useParams } from 'react-router-dom';
 
 import { retornarConjuntoDados } from '../../services/metadadosConjunto';
@@ -17,7 +16,9 @@ export const ViewDados = () => {
 
   const [dados, setDados] = useState([]);
   const [consulta, setConsulta] = useState(nomeConjuntoDeDados);
-  const [filtros, setFiltros] = useState(["uuid"]);
+  const [offset, setOffset] = useState(0);
+  const [filtros, setFiltros] = useState(["uuid", "cep"]);
+  const [carregando, isCarregando] = useState(false);
 
   const conjuntoDados = retornarConjuntoDados(nomeConjuntoDeDados)[0];
 
@@ -25,8 +26,10 @@ export const ViewDados = () => {
     document.title = `${nomeCojuntoDados(nomeConjuntoDeDados)} - Conjunto de Dados - Dados IFPB`;
   }, [])
 
-  const handleQuery = async (consulta, ...filtros) => {
+  const handleQuery = async (consulta, offset = 0, ...filtros) => {
+    console.log(consulta, filtros)
     try {
+      isCarregando(true);
       const query = await fetch(url, {
         method: 'POST',
         headers: {
@@ -43,7 +46,9 @@ export const ViewDados = () => {
         })
       });
       const res = await query.json();
+      console.log(res.data[`${consulta}`])
       setDados(res.data[`${consulta}`]);
+      isCarregando(false);
       return res;
     } catch (error) {
       console.log(error.message);
@@ -52,8 +57,8 @@ export const ViewDados = () => {
 
 
   useEffect(() => {
-    handleQuery(consulta, filtros);
-  }, [consulta, filtros])
+    handleQuery(consulta, offset, filtros);
+  }, [consulta, offset, filtros])
 
 
   return (
@@ -75,9 +80,16 @@ export const ViewDados = () => {
           </div>
         </div>
         <div className="dados">
+          {carregando &&
+            <div className="loader-wrapper">
+              <div className="loader">
+              </div>
+              <p>Carregando...</p>
+            </div>
+          }
           {
             dados.map((dado) => {
-              return <Dado key={dado.uuid} propriedades={Object.keys(dado)} />
+              return <Dado key={dado.uuid} propriedadesValores={Object.entries(dado)} />
             })
           }
         </div>
