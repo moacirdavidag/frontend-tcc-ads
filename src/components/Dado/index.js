@@ -11,7 +11,6 @@ export const Dado = (...propriedadesValores) => {
       <div className="conteudo scrollbar">
         {
           propriedades.map(propriedade => {
-            console.log(`PROPRIEDADE = ${propriedade}`)
             return(
               <>
                   <p><span className="strong">{propriedade[0]}:</span> {propriedade[1]}</p>                

@@ -3,21 +3,26 @@ import "./style.css";
 import { Metadados } from '../../components/Metadadados';
 import { AreaFiltros } from '../../components/AreaFiltros';
 import { Dado } from '../../components/Dado';
-import { Campos } from '../../components/Campos';
 import { useParams } from 'react-router-dom';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 
 import { retornarConjuntoDados } from '../../services/metadadosConjunto';
 import { nomeCojuntoDados } from '../../services/nomeConjuntoDadosUpperCase';
+import { retornarCamposDoConjuntoDeDados } from '../../services/retornarCamposDoConjuntoDeDados';
 import { url } from '../../services/api';
 
 export const ViewDados = () => {
 
   const { conjunto: nomeConjuntoDeDados } = useParams();
+  const campos = retornarCamposDoConjuntoDeDados(nomeConjuntoDeDados)[0];
 
   const [dados, setDados] = useState([]);
   const [consulta, setConsulta] = useState(nomeConjuntoDeDados);
+  const [statusConsulta200, setStatusConsulta200] = useState(true); 
   const [offset, setOffset] = useState(0);
-  const [filtros, setFiltros] = useState(["uuid", "cep"]);
+  const [campo, setCampos] = useState(["uuid"]);
   const [carregando, isCarregando] = useState(false);
 
   const conjuntoDados = retornarConjuntoDados(nomeConjuntoDeDados)[0];
@@ -26,8 +31,7 @@ export const ViewDados = () => {
     document.title = `${nomeCojuntoDados(nomeConjuntoDeDados)} - Conjunto de Dados - Dados IFPB`;
   }, [])
 
-  const handleQuery = async (consulta, offset = 0, ...filtros) => {
-    console.log(consulta, filtros)
+  const handleQuery = async (consulta, offset = 0, ...campos) => {
     try {
       isCarregando(true);
       const query = await fetch(url, {
@@ -39,26 +43,41 @@ export const ViewDados = () => {
           query: `
           query {
             ${consulta} {
-              ${filtros.toString()}
+              ${campos.toString()}
             }
           }
         `
         })
       });
+      if (query.status === 400) {
+        isCarregando(false);
+        setStatusConsulta200(false);
+      }
       const res = await query.json();
-      console.log(res.data[`${consulta}`])
       setDados(res.data[`${consulta}`]);
+      setStatusConsulta200(true);
       isCarregando(false);
-      return res;
     } catch (error) {
+      isCarregando(false);
+      setDados([""]);
+      setStatusConsulta200(false);
       console.log(error.message);
     }
   }
 
+  const handleCampos = (nomeCampo) => {
+    if(!campo.includes(nomeCampo)) {
+      setCampos([...campo, nomeCampo]);
+    } else {
+      let index = campo.indexOf(nomeCampo);
+      let novoArrayDeCampos = campo.splice(index, 1);
+      setCampos(campo.splice(novoArrayDeCampos));
+    }
+  }
 
   useEffect(() => {
-    handleQuery(consulta, offset, filtros);
-  }, [consulta, offset, filtros])
+    handleQuery(consulta, offset, campo);
+  }, [consulta, offset, campo])
 
 
   return (
@@ -76,22 +95,48 @@ export const ViewDados = () => {
       <div className="wrapper_dados">
         <div className="area_campos">
           <div className="campos scrollbar">
-            <Campos />
+            <div className="campos scrollbar">
+              <form>
+                {
+                  campos.map(campo => {
+                    return (
+                      <div>
+                        <input type="checkbox" name="nome" value={campo} placeholder={campo} onClick={() => {
+                          handleCampos(campo);
+                        }}/>
+                        <label for={campo}>{campo}</label>
+                      </div>
+                    )
+                  })
+                }
+
+
+              </form>
+            </div>
           </div>
         </div>
         <div className="dados">
           {carregando &&
-            <div className="loader-wrapper">
+            <div className="info-wrapper">
               <div className="loader">
               </div>
               <p>Carregando...</p>
             </div>
           }
-          {
-            dados.map((dado) => {
-              return <Dado key={dado.uuid} propriedadesValores={Object.entries(dado)} />
-            })
+          {!statusConsulta200 &&
+            <div className="info-wrapper">
+              <FontAwesomeIcon icon={faTriangleExclamation} />
+              <p>Ocorreu um erro! Tente novamente!</p>
+            </div>
           }
+          {
+            statusConsulta200 && (
+              dados.map((dado) => {
+                return <Dado key={dado.uuid} propriedadesValores={Object.entries(dado)} />
+              })
+            )
+          }
+          
         </div>
       </div>
     </>
