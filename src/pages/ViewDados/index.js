@@ -16,20 +16,22 @@ import { url } from '../../services/api';
 export const ViewDados = () => {
 
   const { conjunto: nomeConjuntoDeDados } = useParams();
-  const campos = retornarCamposDoConjuntoDeDados(nomeConjuntoDeDados)[0];
+  const campos = retornarCamposDoConjuntoDeDados(nomeConjuntoDeDados);
 
   const [dados, setDados] = useState([]);
   const [consulta, setConsulta] = useState(nomeConjuntoDeDados);
   const [statusConsulta200, setStatusConsulta200] = useState(true); 
   const [offset, setOffset] = useState(0);
-  const [campo, setCampos] = useState(["uuid"]);
+  const [campo, setCampos] = useState([]);
   const [carregando, isCarregando] = useState(false);
 
   const conjuntoDados = retornarConjuntoDados(nomeConjuntoDeDados)[0];
 
   useEffect(() => {
     document.title = `${nomeCojuntoDados(nomeConjuntoDeDados)} - Conjunto de Dados - Dados IFPB`;
-  }, [])
+  }, []);
+
+  console.log(campo)
 
   const handleQuery = async (consulta, offset = 0, ...campos) => {
     try {
@@ -123,10 +125,16 @@ export const ViewDados = () => {
               <p>Carregando...</p>
             </div>
           }
-          {!statusConsulta200 &&
+          {!statusConsulta200 && campo.length !== 0 &&
             <div className="info-wrapper">
               <FontAwesomeIcon icon={faTriangleExclamation} />
               <p>Ocorreu um erro! Tente novamente!</p>
+            </div>
+          }
+          {campo.length === 0 &&
+            <div className="info-wrapper">
+              <FontAwesomeIcon icon={faTriangleExclamation} />
+              <p>Selecione os campos para a consulta!</p>
             </div>
           }
           {

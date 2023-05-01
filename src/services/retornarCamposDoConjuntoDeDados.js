@@ -1,9 +1,9 @@
-import camposConjuntosDeDados from "../data/camposConjuntosDeDados";
+import camposConjuntosDeDados from "../data/camposConjuntosDeDados"
 
 export const retornarCamposDoConjuntoDeDados = (nome) => {
-    return camposConjuntosDeDados.map(conjunto => {
-        if(conjunto.nome === nome) {
-            return conjunto.campos.sort();
-        }
-    })
+    let conjunto = camposConjuntosDeDados.filter(conjunto => {
+        console.log(conjunto.nome)
+        return conjunto.nome === nome;
+    });
+    return conjunto[0].campos;
 }
