@@ -13,6 +13,7 @@ import { nomeCojuntoDados } from '../../services/nomeConjuntoDadosUpperCase';
 import { retornarCamposDoConjuntoDeDados } from '../../services/retornarCamposDoConjuntoDeDados';
 import { url } from '../../services/api';
 
+
 export const ViewDados = () => {
 
   const { conjunto: nomeConjuntoDeDados } = useParams();
@@ -20,7 +21,7 @@ export const ViewDados = () => {
 
   const [dados, setDados] = useState([]);
   const [consulta, setConsulta] = useState(nomeConjuntoDeDados);
-  const [statusConsulta200, setStatusConsulta200] = useState(true); 
+  const [statusConsulta200, setStatusConsulta200] = useState(true);
   const [offset, setOffset] = useState(0);
   const [campo, setCampos] = useState([]);
   const [carregando, isCarregando] = useState(false);
@@ -31,9 +32,9 @@ export const ViewDados = () => {
     document.title = `${nomeCojuntoDados(nomeConjuntoDeDados)} - Conjunto de Dados - Dados IFPB`;
   }, []);
 
-  console.log(campo)
-
-  const handleQuery = async (consulta, offset = 0, ...campos) => {
+ 
+  const handleQuery = async (consulta, ...campos) => {
+    
     try {
       isCarregando(true);
       const query = await fetch(url, {
@@ -43,13 +44,17 @@ export const ViewDados = () => {
         },
         body: JSON.stringify({
           query: `
-          query {
-            ${consulta} {
-              ${campos.toString()}
+            query($offset: Int, $limit: Int) {
+              ${consulta}(offset: $offset, limit: $limit) {
+                ${campos.join('\n')}
+              }
             }
+          `,
+          variables: {
+            offset,
+            limit: 10
           }
-        `
-        })
+        }),
       });
       if (query.status === 400) {
         isCarregando(false);
@@ -61,14 +66,14 @@ export const ViewDados = () => {
       isCarregando(false);
     } catch (error) {
       isCarregando(false);
-      setDados([""]);
+      setDados([]);
       setStatusConsulta200(false);
       console.log(error.message);
     }
   }
 
   const handleCampos = (nomeCampo) => {
-    if(!campo.includes(nomeCampo)) {
+    if (!campo.includes(nomeCampo)) {
       setCampos([...campo, nomeCampo]);
     } else {
       let index = campo.indexOf(nomeCampo);
@@ -78,8 +83,8 @@ export const ViewDados = () => {
   }
 
   useEffect(() => {
-    handleQuery(consulta, offset, campo);
-  }, [consulta, offset, campo])
+    handleQuery(consulta, campo);
+  }, [consulta, offset, campo]);
 
 
   return (
@@ -105,7 +110,7 @@ export const ViewDados = () => {
                       <div>
                         <input type="checkbox" name="nome" value={campo} placeholder={campo} onClick={() => {
                           handleCampos(campo);
-                        }}/>
+                        }} />
                         <label for={campo}>{campo}</label>
                       </div>
                     )
@@ -140,11 +145,16 @@ export const ViewDados = () => {
           {
             statusConsulta200 && (
               dados.map((dado) => {
-                return <Dado key={dado.uuid} propriedadesValores={Object.entries(dado)} />
+                return <Dado key={dados.indexOf(dado)} propriedadesValores={Object.entries(dado)} />
               })
             )
           }
-          
+          <button onClick={() => (
+            setOffset(offset - 11)
+          )}>Anterior</button>
+          <button onClick={() => (
+            setOffset(offset + 11)
+          )}>Próximo</button>
         </div>
       </div>
     </>
