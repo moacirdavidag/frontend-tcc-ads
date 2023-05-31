@@ -32,9 +32,9 @@ export const ViewDados = () => {
     document.title = `${nomeCojuntoDados(nomeConjuntoDeDados)} - Conjunto de Dados - Dados IFPB`;
   }, []);
 
- 
+
   const handleQuery = async (consulta, ...campos) => {
-    
+
     try {
       isCarregando(true);
       const query = await fetch(url, {
@@ -44,15 +44,23 @@ export const ViewDados = () => {
         },
         body: JSON.stringify({
           query: `
-            query($offset: Int, $limit: Int) {
-              ${consulta}(offset: $offset, limit: $limit) {
+            query($filtros: InputsAluno) {
+              ${consulta}(filtros: $filtros) {
                 ${campos.join('\n')}
               }
             }
           `,
           variables: {
-            offset,
-            limit: 10
+            filtros: {
+              filtro: {
+                offset,
+                limit: 11,
+                curso: null,
+                cota: null,
+                matricula: null,
+                situacao: null
+              }
+            }
           }
         }),
       });
@@ -149,12 +157,15 @@ export const ViewDados = () => {
               })
             )
           }
-          <button onClick={() => (
-            setOffset(offset - 11)
-          )}>Anterior</button>
-          <button onClick={() => (
-            setOffset(offset + 11)
-          )}>Próximo</button>
+          {
+            statusConsulta200 &&
+            <><button onClick={() => (
+              setOffset(offset > 0 ? offset - 11 : 0)
+            )}>Anterior</button><button onClick={() => (
+              setOffset(offset + 11)
+            )}>Próximo</button></>
+          }
+
         </div>
       </div>
     </>
