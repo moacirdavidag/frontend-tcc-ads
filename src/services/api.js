@@ -1,5 +1,7 @@
+require('dotenv').config();
+
 module.exports = {
-    url: "http://localhost:4000/"
+    url: `${process.env.REACT_API_URL}`
 }
 
     
