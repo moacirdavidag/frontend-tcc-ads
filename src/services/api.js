@@ -1,5 +1,7 @@
+require('dotenv').config();
+
 module.exports = {
-    url: "http://localhost:4000/"
+    url: process.env.NODE_ENV === "local" ? "localhost:4000" : "https://graphql-backend-tcc.herokuapp.com/"
 }
 
     

@@ -28,7 +28,13 @@ p {
     justify-content: center;
 }
 
-.loader-wrapper {
+.campos {
+    width: 150px;
+    height: 150px;
+    overflow-y: auto;
+}
+
+.info-wrapper {
     margin-top: 20px;
     width: 730px;
     height: 120px;
@@ -40,6 +46,7 @@ p {
     align-items: center;
     flex-direction: column;
 }
+
 
 
 .loader {
@@ -56,3 +63,4 @@ p {
         transform: rotate(1turn);
     }
 }
+
