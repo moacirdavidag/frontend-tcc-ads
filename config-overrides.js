@@ -22,5 +22,6 @@ module.exports = function override(config) {
         resolve: {
             fullySpecified: false
         }
-    })}
+    })
     return config;
+}
