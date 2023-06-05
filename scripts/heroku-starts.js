@@ -1,7 +1,16 @@
 const express = require("express");
 const path = require("path");
 const app = express();
+const cors = require('cors');
+
+// Allow CORS
+
+app.use(cors());
+
+// Porta
+
 const port = process.env.PORT || 3000;
+
 
 // Check if request is from HTTP and if so, redirect to HTTPS
 app.enable("trust proxy");
@@ -18,6 +27,8 @@ app.use(express.static(path.join(__dirname, "..", "build")));
 app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname, "..", "build"));
 });
+
+
 
 // Any Page Redirects to the build in assets folder index.html that will load the react app
 app.get("*", function (req, res) {
