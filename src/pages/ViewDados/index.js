@@ -39,8 +39,10 @@ export const ViewDados = () => {
       isCarregando(true);
       const query = await fetch(url, {
         method: 'POST',
+        mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
+          'Acess-Control-Allow-Origin': '*'
         },
         body: JSON.stringify({
           query: `
