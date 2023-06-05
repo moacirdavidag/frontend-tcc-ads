@@ -6,6 +6,7 @@ import { Footer } from "./components/Footer";
 import { ViewDados } from "./pages/ViewDados";
 import { Sobre } from "./pages/Sobre";
 import { ConjuntoDados } from "./pages/ConjuntoDados";
+import { ViewDadosAlunos } from "./pages/ViewDadosAlunos";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/conjuntos" element={<ConjuntoDados />} />
           <Route path="/conjuntos/:grupo" element={<ConjuntoDados />} />
           <Route path="/dados/:conjunto" element={<ViewDados />} />
+          <Route path="/dados/alunos" element={<ViewDadosAlunos />} />
           <Route path="/sobre" element={<Sobre />} />
         </Routes>
       </Router>
