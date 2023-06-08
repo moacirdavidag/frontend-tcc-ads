@@ -189,7 +189,7 @@ p {
 }
 
 .btn_filtro {
-    margin-top: 35px;
+    margin: 35px 10px;
     background-color: #12A53B;
     color: #FFFFFF;
     font-weight: bold;
@@ -205,4 +205,29 @@ p {
 .btn_filtro:hover {
     transition: 300ms;
     background-color: #17D44C;
+}
+
+.paginacao-btn {
+    background-color: #12A53B;
+    color: #FFFFFF;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    margin: 20px 4px;
+    cursor: pointer;
+}
+
+.paginacao-btn:hover {
+    transition: 300ms;
+    background-color: #17D44C;
+}
+
+.paginacao-btn-disabled {
+    border: #6F726F solid 2px;
+    background: none;
+    padding: 10px;
+    color: #6F726F;
+    border-radius: 10px;
+    margin: 20px 4px;
+    cursor: pointer;
 }

@@ -24,7 +24,11 @@ export const ViewDadosAlunos = () => {
     // filtros
 
     const [cota, setCota] = useState(null);
+    const [curso, setCurso] = useState(null);
     const [situacao, setSituacao] = useState(null);
+    const [matricula, setMatricula] = useState(null);
+    const [nome, setNome] = useState(null);
+    // const [ordem, setOrdem] = useState("Crescente");
 
     const handleQuery = async (...campos) => {
 
@@ -50,10 +54,12 @@ export const ViewDadosAlunos = () => {
                             filtro: {
                                 offset,
                                 limit: 11,
-                                curso: null,
+                                curso,
                                 cota,
-                                matricula: null,
-                                situacao
+                                matricula,
+                                situacao,
+                                nome,
+                                // ordem
                             }
                         }
                     }
@@ -62,6 +68,8 @@ export const ViewDadosAlunos = () => {
             if (query.status === 400) {
                 setCarregando(false);
                 setStatusConsulta(false);
+            } else if (query.status === 404) {
+                console.log("NOT FOUND")
             }
             const res = await query.json();
             setDados(res.data["alunos"]);
@@ -88,7 +96,7 @@ export const ViewDadosAlunos = () => {
 
     useEffect(() => {
         handleQuery(campos);
-    }, [offset, campos, cota, situacao]);
+    }, [offset, campos, cota, situacao, matricula, curso, nome]);
 
     return (
         <>
@@ -104,27 +112,23 @@ export const ViewDadosAlunos = () => {
                     <div className="input_icon_wrapper">
                         <input type="text" name="busca"
                             className="input border_radius"
-                            placeholder="Buscar" />
+                            placeholder="Nome do aluno" 
+                            onChange={(e) => {
+                                let nome = e.target.value;
+                                setNome(nome !== "" ? nome : null);
+                            }}/>
                         <FaSearch className="input_icon" />
                     </div>
                 </div>
-                <div className="componente">
+                {/* <div className="componente">
                     <span className="enfase">Ordem</span>
-                    <select className="input">
+                    <select className="input" onChange={(e) => {
+                        setOrdem(e.target.value);
+                    }}>
                         <option value="cres">Crescente</option>
                         <option value="desc">Descrescente</option>
                     </select>
-                </div>
-                <div className="componente">
-                    <button className="btn_filtro">
-                        Aplicar
-                    </button>
-                </div>
-                <div className="componente">
-                    <button className="btn_filtro">
-                        Resetar
-                    </button>
-                </div>
+                </div> */}
                 <div className="componente">
                     <span className="enfase">Cota</span>
                     <select className="input" onChange={(e) => {
@@ -145,7 +149,37 @@ export const ViewDadosAlunos = () => {
                         <option value="null">SELECIONAR</option>
                         <option value="CANCELADO">Cancelado</option>
                         <option value="CANCELAMENTO_COMPULSORIO">Cancelamento Compulsório</option>
+                        <option value="CONCLUIDO">Concluído</option>
+                        <option value="EVASAO">Evasão</option>
+                        <option value="FORMADO">Formado</option>
+                        <option value="MATRICULADO">Matriculado</option>
+                        <option value="TRANSFERIDO">Transferido</option>
+                        <option value="TRANSFERIDO_EXTERNO">Transferido Externo</option>
+                        <option value="TRANCADO">Trancado</option>
+                        <option value="TRANCADO_VOLUNTARIAMENTE">Trancado Voluntariamente</option>
                     </select>
+                </div>
+                <div className="componente">
+                    <span className="enfase">Matrícula</span>
+                    <input type="text" className="input" placeholder='Matrícula' onChange={(e) => {
+                        let matricula = e.target.value;
+                        setMatricula(matricula !== "" ? matricula : null);
+                    }} />
+                </div>
+                <div className="componente">
+                    <span className="enfase">Curso</span>
+                    <input type="text" className="input" placeholder="Nome" onChange={(e) => {
+                        let curso = e.target.value;
+                        setCurso(curso !== "" ? curso : null);
+                    }} />
+                </div>
+                <div className='acoes-btn'>
+                        <button className="btn_filtro">
+                            Aplicar
+                        </button>
+                        <button className="btn_filtro">
+                            Resetar
+                        </button>
                 </div>
             </div>
             <div className="wrapper_dados">
@@ -200,11 +234,15 @@ export const ViewDadosAlunos = () => {
                     }
                     {
                         statusConsulta &&
-                        <><button onClick={() => (
-                            setOffset(offset > 0 ? offset - 11 : 0)
-                        )}>Anterior</button><button onClick={() => (
-                            setOffset(offset + 11)
-                        )}>Próximo</button></>
+                        <>
+                            <button className={offset > 0 ? "paginacao-btn" : "paginacao-btn-disabled"}
+                                onClick={() => (
+                                    setOffset(offset > 0 ? offset - 11 : 0)
+                                )}>Anterior</button>
+                            <button className={"paginacao-btn"} onClick={() => (
+                                setOffset(offset + 11)
+                            )}>Próximo</button>
+                        </>
                     }
                 </div>
             </div>
