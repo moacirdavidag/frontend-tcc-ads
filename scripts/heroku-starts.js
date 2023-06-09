@@ -5,7 +5,10 @@ const cors = require('cors');
 
 // Allow CORS
 
-app.use(cors());
+app.use(cors({
+  origin: "*"
+}));
+
 
 // Porta
 
