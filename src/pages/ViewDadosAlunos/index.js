@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Metadados } from '../../components/Metadadados';
 import { Dado } from '../../components/Dado';
 
@@ -7,7 +7,8 @@ import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { retornarCamposDoConjuntoDeDados } from '../../services/retornarCamposDoConjuntoDeDados';
 
-import { url } from '../../services/api';
+
+import { useConsulta } from '../../hooks/useConsulta';
 
 export const ViewDadosAlunos = () => {
 
@@ -15,73 +16,29 @@ export const ViewDadosAlunos = () => {
 
     const camposDaConsulta = retornarCamposDoConjuntoDeDados("alunos");
 
-    const [dados, setDados] = useState([]);
+    // const [dados, setDados] = useState([]);
     const [campos, setCampos] = useState([]);
     const [offset, setOffset] = useState(0);
-    const [statusConsulta, setStatusConsulta] = useState();
-    const [carregando, setCarregando] = useState();
+    const [filtro, setFiltro] = useState({
+        offset,
+        cota: null,
+        curso: null,
+        situacao: null,
+        nome: null,
+        matricula: null
+    })
 
-    // filtros
-
-    const [cota, setCota] = useState(null);
-    const [curso, setCurso] = useState(null);
-    const [situacao, setSituacao] = useState(null);
-    const [matricula, setMatricula] = useState(null);
-    const [nome, setNome] = useState(null);
-    // const [ordem, setOrdem] = useState("Crescente");
-
-    const handleQuery = async (...campos) => {
-
-        try {
-            setCarregando(true);
-            const query = await fetch(url, {
-                method: 'POST',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
-                },
-                body: JSON.stringify({
-                    query: `
-                query($filtros: InputsAluno) {
-                  alunos(filtros: $filtros) {
-                    ${campos.join('\n')}
-                  }
+    const consulta = {
+        query: `
+            query($filtros: InputsAluno) {
+                alunos(filtros: $filtros) {
+                    ${campos.join(",")}
                 }
-              `,
-                    variables: {
-                        filtros: {
-                            filtro: {
-                                offset,
-                                limit: 11,
-                                curso,
-                                cota,
-                                matricula,
-                                situacao,
-                                nome,
-                                // ordem
-                            }
-                        }
-                    }
-                }),
-            });
-            if (query.status === 400) {
-                setCarregando(false);
-                setStatusConsulta(false);
-            } else if (query.status === 404) {
-                console.log("NOT FOUND")
             }
-            const res = await query.json();
-            setDados(res.data["alunos"]);
-            setStatusConsulta(true);
-            setCarregando(false);
-        } catch (error) {
-            setCarregando(false);
-            setDados([]);
-            setStatusConsulta(false);
-            console.log(error.message);
-        }
+        `
     }
+
+    const { dados, statusConsulta, carregando } = useConsulta(consulta.query, filtro);
 
     const handleCampos = (nomeCampo) => {
         if (!campos.includes(nomeCampo)) {
@@ -93,10 +50,6 @@ export const ViewDadosAlunos = () => {
         }
     }
 
-
-    useEffect(() => {
-        handleQuery(campos);
-    }, [offset, campos, cota, situacao, matricula, curso, nome]);
 
     return (
         <>
@@ -112,11 +65,11 @@ export const ViewDadosAlunos = () => {
                     <div className="input_icon_wrapper">
                         <input type="text" name="busca"
                             className="input border_radius"
-                            placeholder="Nome do aluno" 
+                            placeholder="Nome do aluno"
                             onChange={(e) => {
-                                let nome = e.target.value;
-                                setNome(nome !== "" ? nome : null);
-                            }}/>
+                                let nomeAluno = e.target.value === 'null' ? null : e.target.value;
+                                setFiltro((prevState) => ({ ...prevState, nome: nomeAluno }));
+                            }} />
                         <FaSearch className="input_icon" />
                     </div>
                 </div>
@@ -132,8 +85,8 @@ export const ViewDadosAlunos = () => {
                 <div className="componente">
                     <span className="enfase">Cota</span>
                     <select className="input" onChange={(e) => {
-                        let opcaoCota = e.target.value === "null" ? null : e.target.value;
-                        setCota(opcaoCota);
+                        let opcaoCota = e.target.value === 'null' ? null : e.target.value;
+                        setFiltro((prevState) => ({ ...prevState, cota: opcaoCota }));
                     }}>
                         <option value="null">SELECIONAR</option>
                         <option value="ESCOLA_PUBLICA">Oriundo de escola pública</option>
@@ -143,8 +96,8 @@ export const ViewDadosAlunos = () => {
                 <div className="componente">
                     <span className="enfase">Situação</span>
                     <select className="input" onChange={(e) => {
-                        let opcaoSituacao = e.target.value === "null" ? null : e.target.value;
-                        setSituacao(opcaoSituacao);
+                        let opcaoSituacao = e.target.value === 'null' ? null : e.target.value;
+                        setFiltro((prevState) => ({ ...prevState, situacao: opcaoSituacao }));
                     }}>
                         <option value="null">SELECIONAR</option>
                         <option value="CANCELADO">Cancelado</option>
@@ -163,23 +116,25 @@ export const ViewDadosAlunos = () => {
                     <span className="enfase">Matrícula</span>
                     <input type="text" className="input" placeholder='Matrícula' onChange={(e) => {
                         let matricula = e.target.value;
-                        setMatricula(matricula !== "" ? matricula : null);
+                        setFiltro((prevState) => ({ ...prevState, matricula: matricula || null }));
                     }} />
                 </div>
                 <div className="componente">
                     <span className="enfase">Curso</span>
                     <input type="text" className="input" placeholder="Nome" onChange={(e) => {
                         let curso = e.target.value;
-                        setCurso(curso !== "" ? curso : null);
+                        setFiltro((prevState) => ({ ...prevState, curso: curso || null }));
                     }} />
                 </div>
                 <div className='acoes-btn'>
-                        <button className="btn_filtro">
-                            Aplicar
-                        </button>
-                        <button className="btn_filtro">
-                            Resetar
-                        </button>
+                    <button className="btn_filtro" onClick={() => {
+                        //handleQuery();
+                    }}>
+                        Aplicar
+                    </button>
+                    <button className="btn_filtro">
+                        Resetar
+                    </button>
                 </div>
             </div>
             <div className="wrapper_dados">
@@ -219,6 +174,12 @@ export const ViewDadosAlunos = () => {
                             <p>Ocorreu um erro! Tente novamente!</p>
                         </div>
                     }
+                    {statusConsulta && dados.length === 0 &&
+                        <div className="info-wrapper">
+                            <FontAwesomeIcon icon={faTriangleExclamation} />
+                            <p>Nenhum resultado para a pesquisa foi encontrado.</p>
+                        </div>
+                    }
                     {campos.length === 0 &&
                         <div className="info-wrapper">
                             <FontAwesomeIcon icon={faTriangleExclamation} />
@@ -228,12 +189,12 @@ export const ViewDadosAlunos = () => {
                     {
                         statusConsulta && (
                             dados.map((dado) => {
-                                return <Dado key={dado.uuid} propriedadesValores={Object.entries(dado)} />
+                                return <Dado key={dados.indexOf(dado)} propriedadesValores={Object.entries(dado)} />
                             })
                         )
                     }
                     {
-                        statusConsulta &&
+                        statusConsulta && dados.length !== 0 &&
                         <>
                             <button className={offset > 0 ? "paginacao-btn" : "paginacao-btn-disabled"}
                                 onClick={() => (
