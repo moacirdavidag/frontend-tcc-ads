@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { url } from '../services/api';
 
-export const useConsulta = (consulta, variaveis) => {
+export const useConsulta = (consulta, nomeConsulta, variaveis) => {
     const [dados, setDados] = useState([]);
     const [statusConsulta, setStatusConsulta] = useState(false);
     const [carregando, setCarregando] = useState(false);
@@ -38,9 +38,9 @@ export const useConsulta = (consulta, variaveis) => {
                 }
 
                 const res = await query.json();
-                const data = res.data['alunos'];
+                const data = res.data[`${nomeConsulta}`];
 
-                setDados(data !== '' ? data : []);
+                setDados(data !== [] ? data : []);
                 setStatusConsulta(data !== '');
 
                 setCarregando(false);

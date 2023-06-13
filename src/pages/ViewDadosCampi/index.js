@@ -10,35 +10,31 @@ import { retornarCamposDoConjuntoDeDados } from '../../services/retornarCamposDo
 
 import { useConsulta } from '../../hooks/useConsulta';
 
-export const ViewDadosAlunos = () => {
+export const ViewDadosCampi = () => {
 
-    document.title = "Alunos - Conjuntos de Dados - Dados IFPB";
+    document.title = "Campi - Conjuntos de Dados - Dados IFPB";
 
-    const camposDaConsulta = retornarCamposDoConjuntoDeDados("alunos");
+    const camposDaConsulta = retornarCamposDoConjuntoDeDados("campi");
 
-    // const [dados, setDados] = useState([]);
     const [campos, setCampos] = useState([]);
     const [offset, setOffset] = useState(0);
     const [filtro, setFiltro] = useState({
         offset,
-        cota: null,
-        curso: null,
-        situacao: null,
         nome: null,
-        matricula: null
+        sigla: null
     })
 
     const consulta = {
         query: `
-            query($filtros: InputsAluno) {
-                alunos(filtros: $filtros) {
+            query($filtros: InputsCampi) {
+                campi(filtros: $filtros) {
                     ${campos.join(",")}
                 }
             }
         `
     }
 
-    const { dados, statusConsulta, carregando } = useConsulta(consulta.query, "alunos", filtro);
+    const { dados, statusConsulta, carregando } = useConsulta(consulta.query, "campi", filtro);
 
     const handleCampos = (nomeCampo) => {
         if (!campos.includes(nomeCampo)) {
@@ -54,21 +50,21 @@ export const ViewDadosAlunos = () => {
     return (
         <>
             <div className='wrapper_metadados'>
-                <Metadados titulo={"Alunos"} fonte={"http://suap.ifpb.edu.br/api/ensino/alunos/v1/"}
+                <Metadados titulo={"Campi"} fonte={"https://suap.ifpb.edu.br/api/recursos-humanos/campus/v1/"}
                     autor={"Diretoria-Geral de Tecnologia da Informação"} mantenedor={"dti@ifpb.edu.br"}
-                    dataAtualizacao={"4 de Setembro de 2019, 20:41 (UTC-03:00)"}
-                    dataCriacao={"1 de Abril de 2019, 12:27 (UTC-03:00)"} />
+                    dataAtualizacao={"4 de Setembro de 2019, 15:12 (UTC-03:00)"}
+                    dataCriacao={"1 de Abril de 2019, 11:17 (UTC-03:00)"} />
             </div>
             <div className="wrapper_filtros">
                 <div className="componente">
-                    <span className="enfase">Buscar</span>
+                    <span className="enfase">Buscar por nome</span>
                     <div className="input_icon_wrapper">
                         <input type="text" name="busca"
                             className="input border_radius"
-                            placeholder="Nome do aluno"
+                            placeholder="Nome do campus"
                             onChange={(e) => {
-                                let nomeAluno = e.target.value === 'null' ? null : e.target.value;
-                                setFiltro((prevState) => ({ ...prevState, nome: nomeAluno }));
+                                let nomeCampus = e.target.value === 'null' ? null : e.target.value;
+                                setFiltro((prevState) => ({ ...prevState, nome: nomeCampus }));
                             }} />
                         <FaSearch className="input_icon" />
                     </div>
@@ -83,47 +79,10 @@ export const ViewDadosAlunos = () => {
                     </select>
                 </div> */}
                 <div className="componente">
-                    <span className="enfase">Cota</span>
-                    <select className="input" onChange={(e) => {
-                        let opcaoCota = e.target.value === 'null' ? null : e.target.value;
-                        setFiltro((prevState) => ({ ...prevState, cota: opcaoCota }));
-                    }}>
-                        <option value="null">SELECIONAR</option>
-                        <option value="ESCOLA_PUBLICA">Oriundo de escola pública</option>
-                        <option value="ESCOLA_PUBLICA_PPI">Oriundo de escola pública, declarado PPI</option>
-                    </select>
-                </div>
-                <div className="componente">
-                    <span className="enfase">Situação</span>
-                    <select className="input" onChange={(e) => {
-                        let opcaoSituacao = e.target.value === 'null' ? null : e.target.value;
-                        setFiltro((prevState) => ({ ...prevState, situacao: opcaoSituacao }));
-                    }}>
-                        <option value="null">SELECIONAR</option>
-                        <option value="CANCELADO">Cancelado</option>
-                        <option value="CANCELAMENTO_COMPULSORIO">Cancelamento Compulsório</option>
-                        <option value="CONCLUIDO">Concluído</option>
-                        <option value="EVASAO">Evasão</option>
-                        <option value="FORMADO">Formado</option>
-                        <option value="MATRICULADO">Matriculado</option>
-                        <option value="TRANSFERIDO">Transferido</option>
-                        <option value="TRANSFERIDO_EXTERNO">Transferido Externo</option>
-                        <option value="TRANCADO">Trancado</option>
-                        <option value="TRANCADO_VOLUNTARIAMENTE">Trancado Voluntariamente</option>
-                    </select>
-                </div>
-                <div className="componente">
-                    <span className="enfase">Matrícula</span>
-                    <input type="text" className="input" placeholder='Matrícula' onChange={(e) => {
-                        let matricula = e.target.value;
-                        setFiltro((prevState) => ({ ...prevState, matricula: matricula || null }));
-                    }} />
-                </div>
-                <div className="componente">
-                    <span className="enfase">Curso</span>
-                    <input type="text" className="input" placeholder="Nome" onChange={(e) => {
-                        let curso = e.target.value;
-                        setFiltro((prevState) => ({ ...prevState, curso: curso || null }));
+                    <span className="enfase">Sigla</span>
+                    <input type="text" className="input" placeholder='Sigla' onChange={(e) => {
+                        let sigla =  e.target.value === 'null' ? null : e.target.value;;
+                        setFiltro((prevState) => ({ ...prevState, sigla }));
                     }} />
                 </div>
                 <div className='acoes-btn'>

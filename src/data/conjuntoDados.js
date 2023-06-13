@@ -56,7 +56,7 @@ module.exports = [
     {
         nome: "bolsas",
         grupo: "atividades estudantis",
-        fonte: "http://suap.ifpb.edu.br/api/patrimonio/itens-patrimonio/v1/",
+        fonte: "http://suap.ifpb.edu.br/api/assistencia-estudantil/bolsas/v1/",
         autor: "Diretoria-Geral de Tecnologia da Informação",
         mantenedor: "dti@ifpb.edu.br",
         ultima_atualizacao: "4 de Setembro de 2019, 20:24 (UTC-03:00)",
