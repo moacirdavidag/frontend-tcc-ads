@@ -10,54 +10,41 @@ import { retornarCamposDoConjuntoDeDados } from '../../services/retornarCamposDo
 
 import { useConsulta } from '../../hooks/useConsulta';
 
-export const ViewDadosAlunos = () => {
+export const ViewDadosProjetosExtensao = () => {
 
-    document.title = "Alunos - Conjuntos de Dados - Dados IFPB";
+    document.title = "Projetos de Extensão - Conjuntos de Dados - Dados IFPB";
 
-    const camposDaConsulta = retornarCamposDoConjuntoDeDados("alunos");
-
-
+    const camposDaConsulta = retornarCamposDoConjuntoDeDados("projetos de extensão");
 
     const [campos, setCampos] = useState([]);
     const [offset, setOffset] = useState(0);
     const [filtro, setFiltro] = useState({
         offset,
-        cota: null,
-        curso: null,
-        situacao: null,
-        nome: null,
-        matricula: null
+        uo: null,
+        foco: null,
+        area: null,
+        titulo: null
     })
 
     const consulta = {
         query: `
-        query($filtros: InputsAluno) {
-          alunos(filtros: $filtros) {
-            ${campos.join(",")}
-          }
-        }
-      `
+            query($filtros: InputsProjetoExtensao) {
+                projetosDeExtensao(filtros: $filtros) {
+                    ${campos.join(",")}
+                }
+            }
+        `
     }
 
-    console.log(consulta)
-
-    const { dados, statusConsulta, carregando } = useConsulta(consulta.query, "alunos", filtro);
-
+    const { dados, statusConsulta, carregando } = useConsulta(consulta.query, "projetosDeExtensao", filtro);
 
     const handleCampos = (nomeCampo) => {
         if (!campos.includes(nomeCampo)) {
-            let novoCampo = nomeCampo;
-            if (nomeCampo === 'curso') {
-                novoCampo = `
-                ${campos.join(",")}
-                curso {
-                  nome
-                }
-              `;
-            }
-            setCampos([...campos, novoCampo]);
+            setCampos([...campos, nomeCampo]);
         } else {
-            setCampos(campos.filter(campo => campo !== nomeCampo));
+            let index = campos.indexOf(nomeCampo);
+            let novoArrayDeCampos = campos.splice(index, 1);
+            setCampos(campos.splice(novoArrayDeCampos));
         }
     }
 
@@ -65,10 +52,10 @@ export const ViewDadosAlunos = () => {
     return (
         <>
             <div className='wrapper_metadados'>
-                <Metadados titulo={"Alunos"} fonte={"http://suap.ifpb.edu.br/api/ensino/alunos/v1/"}
+                <Metadados titulo={"Projetos de Extensão"} fonte={"http://suap.ifpb.edu.br/api/extensao/projeto-extensao/v1/"}
                     autor={"Diretoria-Geral de Tecnologia da Informação"} mantenedor={"dti@ifpb.edu.br"}
-                    dataAtualizacao={"4 de Setembro de 2019, 20:41 (UTC-03:00)"}
-                    dataCriacao={"1 de Abril de 2019, 12:27 (UTC-03:00)"} />
+                    dataAtualizacao={"2 de Junho de 2021, 15:16 (UTC-03:00)"}
+                    dataCriacao={"1 de Abril de 2019, 11:42 (UTC-03:00)"} />
             </div>
             <div className="wrapper_filtros">
                 <div className="componente">
@@ -76,57 +63,37 @@ export const ViewDadosAlunos = () => {
                     <div className="input_icon_wrapper">
                         <input type="text" name="busca"
                             className="input border_radius"
-                            placeholder="Nome do aluno"
+                            placeholder="Nome do projeto"
                             onChange={(e) => {
-                                let nomeAluno = e.target.value === 'null' ? null : e.target.value;
-                                setFiltro((prevState) => ({ ...prevState, nome: nomeAluno }));
+                                let nomeProjeto = e.target.value === 'null' ? null : e.target.value;
+                                setFiltro((prevState) => ({ ...prevState, titulo: nomeProjeto }));
                             }} />
                         <FaSearch className="input_icon" />
                     </div>
                 </div>
                 <div className="componente">
-                    <span className="enfase">Cota</span>
-                    <select className="input" onChange={(e) => {
-                        let opcaoCota = e.target.value === 'null' ? null : e.target.value;
-                        setFiltro((prevState) => ({ ...prevState, cota: opcaoCota }));
-                    }}>
-                        <option value="null">SELECIONAR</option>
-                        <option value="ESCOLA_PUBLICA">Oriundo de escola pública</option>
-                        <option value="ESCOLA_PUBLICA_PPI">Oriundo de escola pública, declarado PPI</option>
-                    </select>
+                    <span className="enfase">Foco</span>
+                    <input type="text" placeholder='Foco'
+                        className={"input"} onChange={(e) => {
+                            let foco = e.target.value !== null && e.target.value !== '' ? e.target.value : null;
+                            setFiltro((prevState) => ({ ...prevState, foco }));
+                        }} />
                 </div>
                 <div className="componente">
-                    <span className="enfase">Situação</span>
-                    <select className="input" onChange={(e) => {
-                        let opcaoSituacao = e.target.value === 'null' ? null : e.target.value;
-                        setFiltro((prevState) => ({ ...prevState, situacao: opcaoSituacao }));
-                    }}>
-                        <option value="null">SELECIONAR</option>
-                        <option value="CANCELADO">Cancelado</option>
-                        <option value="CANCELAMENTO_COMPULSORIO">Cancelamento Compulsório</option>
-                        <option value="CONCLUIDO">Concluído</option>
-                        <option value="EVASAO">Evasão</option>
-                        <option value="FORMADO">Formado</option>
-                        <option value="MATRICULADO">Matriculado</option>
-                        <option value="TRANSFERIDO">Transferido</option>
-                        <option value="TRANSFERIDO_EXTERNO">Transferido Externo</option>
-                        <option value="TRANCADO">Trancado</option>
-                        <option value="TRANCADO_VOLUNTARIAMENTE">Trancado Voluntariamente</option>
-                    </select>
+                    <span className="enfase">Área</span>
+                    <input type="text" placeholder='Área'
+                        className={"input"} onChange={(e) => {
+                            let area = e.target.value === 'null' ? null : e.target.value;
+                            setFiltro((prevState) => ({ ...prevState, area }));
+                        }} />
                 </div>
                 <div className="componente">
-                    <span className="enfase">Matrícula</span>
-                    <input type="text" className="input" placeholder='Matrícula' onChange={(e) => {
-                        let matricula = e.target.value;
-                        setFiltro((prevState) => ({ ...prevState, matricula: matricula || null }));
-                    }} />
-                </div>
-                <div className="componente">
-                    <span className="enfase">Curso</span>
-                    <input type="text" className="input" placeholder="Nome" onChange={(e) => {
-                        let curso = e.target.value;
-                        setFiltro((prevState) => ({ ...prevState, curso: curso || null }));
-                    }} />
+                    <span className="enfase">Campus</span>
+                    <input type="text" placeholder='Campus'
+                        className={"input"} onChange={(e) => {
+                            let uo = e.target.value !== null && e.target.value !== '' ? e.target.value : null;
+                            setFiltro((prevState) => ({ ...prevState, uo }));
+                        }} />
                 </div>
                 <div className='acoes-btn'>
                     <button className="btn_filtro" onClick={() => {
@@ -142,7 +109,6 @@ export const ViewDadosAlunos = () => {
             <div className="wrapper_dados">
                 <div className="area_campos">
                     <div className="campos scrollbar">
-                        <span className='enfase'>Campos</span>
                         <div className="campos scrollbar">
                             <form>
                                 {

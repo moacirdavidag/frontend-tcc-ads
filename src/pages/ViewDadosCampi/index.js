@@ -24,25 +24,33 @@ export const ViewDadosCampi = () => {
         sigla: null
     })
 
+
     const consulta = {
         query: `
-            query($filtros: InputsCampi) {
-                campi(filtros: $filtros) {
-                    ${campos.join(",")}
-                }
-            }
-        `
+        query($filtros: InputsCampi) {
+          campi(filtros: $filtros) {
+            ${campos.join(",")}
+          }
+        }
+      `
     }
 
     const { dados, statusConsulta, carregando } = useConsulta(consulta.query, "campi", filtro);
 
     const handleCampos = (nomeCampo) => {
         if (!campos.includes(nomeCampo)) {
-            setCampos([...campos, nomeCampo]);
+            let novoCampo = nomeCampo;
+            if (nomeCampo === 'municipio') {
+                novoCampo = `
+                ${campos.join(",")}
+                municipio {
+                  nome
+                }
+              `;
+            }
+            setCampos([...campos, novoCampo]);
         } else {
-            let index = campos.indexOf(nomeCampo);
-            let novoArrayDeCampos = campos.splice(index, 1);
-            setCampos(campos.splice(novoArrayDeCampos));
+            setCampos(campos.filter(campo => campo !== nomeCampo));
         }
     }
 
@@ -69,15 +77,6 @@ export const ViewDadosCampi = () => {
                         <FaSearch className="input_icon" />
                     </div>
                 </div>
-                {/* <div className="componente">
-                    <span className="enfase">Ordem</span>
-                    <select className="input" onChange={(e) => {
-                        setOrdem(e.target.value);
-                    }}>
-                        <option value="cres">Crescente</option>
-                        <option value="desc">Descrescente</option>
-                    </select>
-                </div> */}
                 <div className="componente">
                     <span className="enfase">Sigla</span>
                     <input type="text" className="input" placeholder='Sigla' onChange={(e) => {

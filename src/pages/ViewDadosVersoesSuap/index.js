@@ -10,31 +10,30 @@ import { retornarCamposDoConjuntoDeDados } from '../../services/retornarCamposDo
 
 import { useConsulta } from '../../hooks/useConsulta';
 
-export const ViewDadosMatrizes = () => {
+export const ViewDadosVersoesSuap = () => {
 
-    document.title = "Matrizes - Conjuntos de Dados - Dados IFPB";
+    document.title = "Versões do SUAP - Conjuntos de Dados - Dados IFPB";
 
-    const camposDaConsulta = retornarCamposDoConjuntoDeDados("matrizes");
+    const camposDaConsulta = retornarCamposDoConjuntoDeDados("versões do SUAP");
 
     const [campos, setCampos] = useState([]);
     const [offset, setOffset] = useState(0);
     const [filtro, setFiltro] = useState({
-        offset,
-        curso: null
+        offset
     })
 
     const consulta = {
         query: `
-            query($filtros: InputsMatrizCurso) {
-                matrizes (filtros: $filtros) {
+            query($filtros: InputsVersoes) {
+                versoes(filtros: $filtros) {
                     ${campos.join(",")}
                 }
             }
         `
     }
 
-    const { dados, statusConsulta, carregando } = useConsulta(consulta.query, "matrizes", filtro);
-
+    const { dados, statusConsulta, carregando } = useConsulta(consulta.query, "versoes", filtro);
+ 
     const handleCampos = (nomeCampo) => {
         if (!campos.includes(nomeCampo)) {
             setCampos([...campos, nomeCampo]);
@@ -45,38 +44,45 @@ export const ViewDadosMatrizes = () => {
         }
     }
 
-
     return (
         <>
             <div className='wrapper_metadados'>
-                <Metadados titulo={"Matrizes"} fonte={"http://suap.ifpb.edu.br/api/ensino/matrizes/v1/"}
+                <Metadados titulo={"Servidores"} 
+                    fonte={"https://releases.ifpb.edu.br/api/releases/"}
                     autor={"Diretoria-Geral de Tecnologia da Informação"} mantenedor={"dti@ifpb.edu.br"}
-                    dataAtualizacao={"4 de Setembro de 2019, 20:42 (UTC-03:00)"}
-                    dataCriacao={"1 de Abril de 2019, 12:29 (UTC-03:00)"} />
+                    dataAtualizacao={"2 de Junho de 2021, 17:33 (UTC-03:00)"}
+                    dataCriacao={"10 de Abril de 2019, 18:04 (UTC-03:00)"} />
             </div>
-            <div className="wrapper_filtros">
+            {/* <div className="wrapper_filtros">
                 <div className="componente">
                     <span className="enfase">Buscar</span>
                     <div className="input_icon_wrapper">
                         <input type="text" name="busca"
                             className="input border_radius"
-                            placeholder="Nome do curso"
+                            placeholder="Nome do servidor"
                             onChange={(e) => {
-                                let nomeCurso = e.target.value === 'null' ? null : e.target.value;
-                                setFiltro((prevState) => ({ ...prevState, curso: nomeCurso }));
+                                let nome = e.target.value === 'null' ? null : e.target.value;
+                                setFiltro((prevState) => ({ ...prevState, nome }));
                             }} />
                         <FaSearch className="input_icon" />
                     </div>
                 </div>
-                {/* <div className="componente">
-                    <span className="enfase">Ordem</span>
-                    <select className="input" onChange={(e) => {
-                        setOrdem(e.target.value);
-                    }}>
-                        <option value="cres">Crescente</option>
-                        <option value="desc">Descrescente</option>
-                    </select>
-                </div> */}
+                <div className="componente">
+                    <span className="enfase">Cargo</span>
+                    <input type="text" placeholder='Cargo'
+                        className={"input"} onChange={(e) => {
+                            let cargo = e.target.value !== null && e.target.value !== '' ? e.target.value : null;
+                            setFiltro((prevState) => ({ ...prevState, cargo }));
+                        }} />
+                </div>
+                <div className="componente">
+                    <span className="enfase">Matrícula</span>
+                    <input type="text" placeholder='Matrícula'
+                        className={"input"} onChange={(e) => {
+                            let matricula = e.target.value !== null && e.target.value !== '' ? e.target.value : null;
+                            setFiltro((prevState) => ({ ...prevState, matricula }));
+                        }} />
+                </div>
                 <div className='acoes-btn'>
                     <button className="btn_filtro" onClick={() => {
                         //handleQuery();
@@ -87,7 +93,7 @@ export const ViewDadosMatrizes = () => {
                         Resetar
                     </button>
                 </div>
-            </div>
+            </div> */}
             <div className="wrapper_dados">
                 <div className="area_campos">
                     <div className="campos scrollbar">

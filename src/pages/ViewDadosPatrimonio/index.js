@@ -63,7 +63,7 @@ export const ViewDadosPatrimonio = () => {
                             className="input border_radius"
                             placeholder="Nome do campus"
                             onChange={(e) => {
-                                let campus = e.target.value === 'null' || ' ' ? null : e.target.value;
+                                let campus = e.target.value !== null && e.target.value !== '' ? e.target.value : null;
                                 setFiltro((prevState) => ({ ...prevState, campus }));
                             }} />
                         <FaSearch className="input_icon" />

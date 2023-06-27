@@ -4,14 +4,14 @@ module.exports = [
         campos: [
             "cep", "cnpj", "endereco",
             "nome", "sigla", "telefone",
-            "url", "uuid"
+            "url", "uuid", "municipio"
         ]
     },
     {
         nome: "alunos",
         campos: [
             "cota", "situacao", "matricula",
-            "nome", "url", "uuid"
+            "nome", "url", "uuid", "curso"
         ]
     },
     {
@@ -86,8 +86,8 @@ module.exports = [
     {
         nome: "setores",
         campos: [
-            "is_siape", "nome", "setores_filho",
-            "sigla", "superior",  
+            "is_siape", "nome",
+            "sigla",  
             "total_servidores", "nome", 
             "url", "uuid"
         ]
@@ -95,7 +95,7 @@ module.exports = [
     {
         nome: "versões do SUAP",
         campos: [
-            "author", "project", "uuid"
+            "author", "project"
         ]
     },
 ]
