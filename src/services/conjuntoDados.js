@@ -1,4 +1,4 @@
-module.exports = [
+const conjuntoDeDados = [
     {
         nome: "alunos",
         grupo: "ensino",
@@ -7,6 +7,10 @@ module.exports = [
         mantenedor: "dti@ifpb.edu.br",
         ultima_atualizacao: "4 de Setembro de 2019, 20:41 (UTC-03:00)",
         data_criacao: "1 de Abril de 2019, 12:27 (UTC-03:00)",
+        campos: [
+            "cota", "situacao", "matricula",
+            "nome", "url", "uuid", "curso"
+        ]
     },
     {
         nome: "cursos",
@@ -16,6 +20,12 @@ module.exports = [
         mantenedor: "dti@ifpb.edu.br",
         ultima_atualizacao: "4 de Setembro de 2019, 20:42 (UTC-03:00)",
         data_criacao: "1 de Abril de 2019, 12:28 (UTC-03:00)",
+        campos: [
+            "ch", "codigo", "coordenador",
+            "descricao", "diretoria", "eixo",
+            "modalidade", "natureza_participacao",
+            "resolucao_criacao", "url", "uuid"
+        ]
     },
     {
         nome: "campi",
@@ -25,6 +35,11 @@ module.exports = [
         mantenedor: "dti@ifpb.edu.br",
         ultima_atualizacao: "2 de Junho de 2021, 15:12 (UTC-03:00)",
         data_criacao: "1 de Abril de 2019, 11:17 (UTC-03:00)",
+        campos: [
+            "cep", "cnpj", "endereco",
+            "nome", "sigla", "telefone",
+            "url", "uuid", "municipio"
+        ]
     },
     // {
     //     nome: "mapas de atividades",
@@ -43,6 +58,11 @@ module.exports = [
         mantenedor: "dti@ifpb.edu.br",
         ultima_atualizacao: "4 de Setembro de 2019, 20:24 (UTC-03:00)",
         data_criacao: "1 de Abril de 2019, 12:21 (UTC-03:00)",
+        campos: [
+            "descricao", "campus", "estado_conservacao", "numero",
+            "situacao", "url", "uuid", "valor_inicial",
+            "valor_liquido_contabil"
+        ]
     },
     {
         nome: "bolsas",
@@ -52,6 +72,10 @@ module.exports = [
         mantenedor: "dti@ifpb.edu.br",
         ultima_atualizacao: "4 de Setembro de 2019, 20:24 (UTC-03:00)",
         data_criacao: "1 de Abril de 2019, 12:21 (UTC-03:00)",
+        campos: [
+            "aluno", "categoria_bolsa", "setor",
+            "valor_bolsa", "url", "uuid"
+        ]
     },
     // {
     //     nome: "programas de assistência estudantil",
@@ -70,6 +94,12 @@ module.exports = [
         mantenedor: "dti@ifpb.edu.br",
         ultima_atualizacao: "2 de Junho de 2021, 15:12 (UTC-03:00)",
         data_criacao: "1 de Abril de 2019, 11:09 (UTC-03:00)",
+        campos: [
+            "cargo_emprego", "disciplina_ingresso", "funcao_codigo",
+            "jornada_trabalho",
+            "matricula", "nome",
+            "url", "uuid"
+        ]
     },
     {
         nome: "setores",
@@ -79,6 +109,15 @@ module.exports = [
         mantenedor: "dti@ifpb.edu.br",
         ultima_atualizacao: "2 de Junho de 2021, 15:12 (UTC-03:00)",
         data_criacao: "1 de Abril de 2019, 10:16 (UTC-03:00)",
+        campos: [
+            "is_siape", "nome",
+            "sigla",
+            "uo",
+            "superior",
+            "total_servidores", "nome",
+            "url", "uuid",
+            "setores_filho"
+        ]
     },
     {
         nome: "projetos de extensão",
@@ -88,6 +127,14 @@ module.exports = [
         mantenedor: "dti@ifpb.edu.br",
         ultima_atualizacao: "2 de Junho de 2021, 15:16 (UTC-03:00)",
         data_criacao: "1 de Abril de 2019, 11:42 (UTC-03:00)",
+        campos: [
+            "aprovado", "area_conhecimento", "foco_tecnologico",
+            "inicio_execucao", "fim_execucao",
+            "justificativa", "resultados_esperados",
+            "resumo", "titulo", "uo", "url",
+            "valor_total_executado",
+            "uuid"
+        ]
     },
     {
         nome: "projetos de pesquisa",
@@ -97,6 +144,14 @@ module.exports = [
         mantenedor: "dti@ifpb.edu.br",
         ultima_atualizacao: "2 de Junho de 2021, 15:15 (UTC-03:00)",
         data_criacao: "1 de Abril de 2019, 11:25 (UTC-03:00)",
+        campos: [
+            "aprovado", "area_conhecimento", "foco_tecnologico",
+            "inicio_execucao", "fim_execucao",
+            "justificativa", "resultados_esperados",
+            "resumo", "titulo", "uo", "url",
+            "valor_total_executado",
+            "uuid"
+        ]
     },
     {
         nome: "versões do SUAP",
@@ -106,5 +161,14 @@ module.exports = [
         mantenedor: "dti@ifpb.edu.br",
         ultima_atualizacao: "2 de Junho de 2021, 17:33 (UTC-03:00)",
         data_criacao: "10 de Abril de 2019, 18:04 (UTC-03:00)",
+        campos: [
+            "author", "project"
+        ]
     }
 ]
+
+export default conjuntoDeDados;
+
+export const retornarConjuntoDeDados = (nome => {
+    return conjuntoDeDados.filter(conjunto => conjunto.nome === nome)[0];
+})

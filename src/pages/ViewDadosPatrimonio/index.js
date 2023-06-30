@@ -5,8 +5,7 @@ import { Dado } from '../../components/Dado';
 import { FaSearch } from 'react-icons/fa';
 import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { retornarCamposDoConjuntoDeDados } from '../../services/retornarCamposDoConjuntoDeDados';
-
+import { retornarConjuntoDeDados } from '../../services/conjuntoDados';
 
 import { useConsulta } from '../../hooks/useConsulta';
 
@@ -14,8 +13,7 @@ export const ViewDadosPatrimonio = () => {
 
     document.title = "Patrimônio - Conjuntos de Dados - Dados IFPB";
 
-    const camposDaConsulta = retornarCamposDoConjuntoDeDados("patrimônio");
-
+    const conjuntoDeDado = retornarConjuntoDeDados("patrimônio");
     const [campos, setCampos] = useState([]);
     const [offset, setOffset] = useState(0);
     const [filtro, setFiltro] = useState({
@@ -37,23 +35,29 @@ export const ViewDadosPatrimonio = () => {
     const { dados, statusConsulta, carregando } = useConsulta(consulta.query, "patrimonio", filtro);
 
     const handleCampos = (nomeCampo) => {
-        if (!campos.includes(nomeCampo)) {
-            setCampos([...campos, nomeCampo]);
+        let novoCampo = nomeCampo;
+        if (!campos.includes(nomeCampo) && !campos.includes(`campus { nome }`)) {
+            if (novoCampo === 'campus') {
+                novoCampo = 'campus { nome }';
+            }
+            setCampos([...campos, novoCampo]);
         } else {
-            let index = campos.indexOf(nomeCampo);
-            let novoArrayDeCampos = campos.splice(index, 1);
-            setCampos(campos.splice(novoArrayDeCampos));
+            if (nomeCampo === 'campus') {
+                setCampos(campos.filter(campo => campo !== 'campus { nome }'));
+            } else {
+                setCampos(campos.filter(campo => campo !== nomeCampo));
+            }
         }
-    }
+    };
 
 
     return (
         <>
             <div className='wrapper_metadados'>
-                <Metadados titulo={"Patrimônio"} fonte={"http://suap.ifpb.edu.br/api/patrimonio/itens-patrimonio/v1/"}
-                    autor={"Diretoria-Geral de Tecnologia da Informação"} mantenedor={"dti@ifpb.edu.br"}
-                    dataAtualizacao={"4 de Setembro de 2019, 20:24 (UTC-03:00)"}
-                    dataCriacao={"1 de Abril de 2019, 12:21 (UTC-03:00)"} />
+                <Metadados titulo={conjuntoDeDado.nome} fonte={conjuntoDeDado.fonte}
+                    autor={conjuntoDeDado.autor} mantenedor={conjuntoDeDado.mantenedor}
+                    dataAtualizacao={conjuntoDeDado.ultima_atualizacao}
+                    dataCriacao={conjuntoDeDado.data_criacao} />
             </div>
             <div className="wrapper_filtros">
                 <div className="componente">
@@ -78,7 +82,7 @@ export const ViewDadosPatrimonio = () => {
                         <option value="desc">Descrescente</option>
                     </select>
                 </div> */}
-                
+
                 <div className="componente">
                     <span className="enfase">Número</span>
                     <input type="number" className="input" placeholder='Número' onChange={(e) => {
@@ -100,10 +104,11 @@ export const ViewDadosPatrimonio = () => {
             <div className="wrapper_dados">
                 <div className="area_campos">
                     <div className="campos scrollbar">
+                        <span className='enfase'>Campos</span>
                         <div className="campos scrollbar">
                             <form>
                                 {
-                                    camposDaConsulta.map(campo => {
+                                    conjuntoDeDado.campos.map(campo => {
                                         return (
                                             <div>
                                                 <input type="checkbox" name="nome" value={campo} placeholder={campo} onClick={() => {
@@ -154,16 +159,34 @@ export const ViewDadosPatrimonio = () => {
                         )
                     }
                     {
-                        statusConsulta && dados.length !== 0 &&
-                        <>
-                            <button className={offset > 0 ? "paginacao-btn" : "paginacao-btn-disabled"}
-                                onClick={() => (
-                                    setOffset(offset > 0 ? offset - 11 : 0)
-                                )}>Anterior</button>
-                            <button className={"paginacao-btn"} onClick={() => (
-                                setOffset(offset + 11)
-                            )}>Próximo</button>
-                        </>
+                        statusConsulta && dados.length !== 0 && (
+                            <>
+                                <button
+                                    className={offset <= 0 ? "paginacao-btn-disabled" : "paginacao-btn"}
+                                    onClick={() => {
+                                        setOffset(offset > 0 ? offset - 11 : 0);
+                                        setFiltro((prevState) => ({
+                                            ...prevState,
+                                            offset
+                                        }));
+                                    }}
+                                >
+                                    Anterior
+                                </button>
+                                <button
+                                    className={"paginacao-btn"}
+                                    onClick={() => {
+                                        setOffset(offset + 11);
+                                        setFiltro((prevState) => ({
+                                            ...prevState,
+                                            offset
+                                        }));
+                                    }}
+                                >
+                                    Próximo
+                                </button>
+                            </>
+                        )
                     }
                 </div>
             </div>

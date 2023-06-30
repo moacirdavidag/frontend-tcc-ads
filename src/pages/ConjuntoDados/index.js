@@ -1,5 +1,5 @@
 import React from 'react';
-import conjuntoDados from '../../data/conjuntoDados';
+import conjuntoDados from '../../services/conjuntoDados';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDatabase } from '@fortawesome/free-solid-svg-icons';

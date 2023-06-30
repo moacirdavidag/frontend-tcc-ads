@@ -9,14 +9,12 @@ export const Dado = ({ propriedadesValores }) => {
       <div className="conteudo scrollbar">
         {propriedadesValores.map(([chave, valor]) => {
           if (typeof valor === 'object' && valor !== null) {
-            let objeto = Object.entries(valor)[0];
-            // objeto.map(([propriedade, valorPropriedade]) => {
-            //   return (
-            //     <p key={chave}>
-            //       <span className="strong">{retornarNomeDosCamposDosDadosCorretamente(propriedade)}:</span> {valorPropriedade}
-            //     </p>
-            //   );
-            // })  
+            const valores = Object.values(valor);
+            return (
+              <p key={chave}>
+                <span className="strong">{retornarNomeDosCamposDosDadosCorretamente(chave)}:</span> {valores}
+              </p>
+            )
           } else {
             return (
               <p key={chave}>

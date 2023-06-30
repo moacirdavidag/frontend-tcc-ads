@@ -5,8 +5,7 @@ import { Dado } from '../../components/Dado';
 import { FaSearch } from 'react-icons/fa';
 import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { retornarCamposDoConjuntoDeDados } from '../../services/retornarCamposDoConjuntoDeDados';
-
+import { retornarConjuntoDeDados } from '../../services/conjuntoDados';
 
 import { useConsulta } from '../../hooks/useConsulta';
 
@@ -14,8 +13,7 @@ export const ViewDadosServidores = () => {
 
     document.title = "Servidores - Conjuntos de Dados - Dados IFPB";
 
-    const camposDaConsulta = retornarCamposDoConjuntoDeDados("servidores");
-
+    const conjuntoDeDado = retornarConjuntoDeDados("servidores");
     const [campos, setCampos] = useState([]);
     const [offset, setOffset] = useState(0);
     const [filtro, setFiltro] = useState({
@@ -36,7 +34,7 @@ export const ViewDadosServidores = () => {
     }
 
     const { dados, statusConsulta, carregando } = useConsulta(consulta.query, "servidores", filtro);
- 
+
     const handleCampos = (nomeCampo) => {
         if (!campos.includes(nomeCampo)) {
             setCampos([...campos, nomeCampo]);
@@ -50,10 +48,10 @@ export const ViewDadosServidores = () => {
     return (
         <>
             <div className='wrapper_metadados'>
-                <Metadados titulo={"Servidores"} fonte={"https://suap.ifpb.edu.br/api/recursos-humanos/servidores/v1/"}
-                    autor={"Diretoria-Geral de Tecnologia da Informação"} mantenedor={"dti@ifpb.edu.br"}
-                    dataAtualizacao={"2 de Junho de 2021, 15:12 (UTC-03:00)"}
-                    dataCriacao={"1 de Abril de 2019, 11:09 (UTC-03:00)"} />
+                <Metadados titulo={conjuntoDeDado.nome} fonte={conjuntoDeDado.fonte}
+                    autor={conjuntoDeDado.autor} mantenedor={conjuntoDeDado.mantenedor}
+                    dataAtualizacao={conjuntoDeDado.ultima_atualizacao}
+                    dataCriacao={conjuntoDeDado.data_criacao} />
             </div>
             <div className="wrapper_filtros">
                 <div className="componente">
@@ -99,10 +97,12 @@ export const ViewDadosServidores = () => {
             <div className="wrapper_dados">
                 <div className="area_campos">
                     <div className="campos scrollbar">
+                        <span className='enfase'>Campos</span>
+
                         <div className="campos scrollbar">
                             <form>
                                 {
-                                    camposDaConsulta.map(campo => {
+                                    conjuntoDeDado.campos.map(campo => {
                                         return (
                                             <div>
                                                 <input type="checkbox" name="nome" value={campo} placeholder={campo} onClick={() => {
@@ -153,16 +153,34 @@ export const ViewDadosServidores = () => {
                         )
                     }
                     {
-                        statusConsulta && dados.length !== 0 &&
-                        <>
-                            <button className={offset > 0 ? "paginacao-btn" : "paginacao-btn-disabled"}
-                                onClick={() => (
-                                    setOffset(offset > 0 ? offset - 11 : 0)
-                                )}>Anterior</button>
-                            <button className={"paginacao-btn"} onClick={() => (
-                                setOffset(offset + 11)
-                            )}>Próximo</button>
-                        </>
+                        statusConsulta && dados.length !== 0 && (
+                            <>
+                                <button
+                                    className={offset <= 0 ? "paginacao-btn-disabled" : "paginacao-btn"}
+                                    onClick={() => {
+                                        setOffset(offset > 0 ? offset - 11 : 0);
+                                        setFiltro((prevState) => ({
+                                            ...prevState,
+                                            offset
+                                        }));
+                                    }}
+                                >
+                                    Anterior
+                                </button>
+                                <button
+                                    className={"paginacao-btn"}
+                                    onClick={() => {
+                                        setOffset(offset + 11);
+                                        setFiltro((prevState) => ({
+                                            ...prevState,
+                                            offset
+                                        }));
+                                    }}
+                                >
+                                    Próximo
+                                </button>
+                            </>
+                        )
                     }
                 </div>
             </div>

@@ -5,8 +5,7 @@ import { Dado } from '../../components/Dado';
 import { FaSearch } from 'react-icons/fa';
 import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { retornarCamposDoConjuntoDeDados } from '../../services/retornarCamposDoConjuntoDeDados';
-
+import { retornarConjuntoDeDados } from '../../services/conjuntoDados';
 
 import { useConsulta } from '../../hooks/useConsulta';
 
@@ -14,7 +13,7 @@ export const ViewDadosCampi = () => {
 
     document.title = "Campi - Conjuntos de Dados - Dados IFPB";
 
-    const camposDaConsulta = retornarCamposDoConjuntoDeDados("campi");
+    const conjuntoDeDado = retornarConjuntoDeDados("campi");
 
     const [campos, setCampos] = useState([]);
     const [offset, setOffset] = useState(0);
@@ -58,10 +57,10 @@ export const ViewDadosCampi = () => {
     return (
         <>
             <div className='wrapper_metadados'>
-                <Metadados titulo={"Campi"} fonte={"https://suap.ifpb.edu.br/api/recursos-humanos/campus/v1/"}
-                    autor={"Diretoria-Geral de Tecnologia da Informação"} mantenedor={"dti@ifpb.edu.br"}
-                    dataAtualizacao={"4 de Setembro de 2019, 15:12 (UTC-03:00)"}
-                    dataCriacao={"1 de Abril de 2019, 11:17 (UTC-03:00)"} />
+                <Metadados titulo={conjuntoDeDado.nome} fonte={conjuntoDeDado.fonte}
+                    autor={conjuntoDeDado.autor} mantenedor={conjuntoDeDado.mantenedor}
+                    dataAtualizacao={conjuntoDeDado.ultima_atualizacao}
+                    dataCriacao={conjuntoDeDado.data_criacao} />
             </div>
             <div className="wrapper_filtros">
                 <div className="componente">
@@ -80,7 +79,7 @@ export const ViewDadosCampi = () => {
                 <div className="componente">
                     <span className="enfase">Sigla</span>
                     <input type="text" className="input" placeholder='Sigla' onChange={(e) => {
-                        let sigla =  e.target.value === 'null' ? null : e.target.value;;
+                        let sigla = e.target.value === 'null' ? null : e.target.value;;
                         setFiltro((prevState) => ({ ...prevState, sigla }));
                     }} />
                 </div>
@@ -98,10 +97,11 @@ export const ViewDadosCampi = () => {
             <div className="wrapper_dados">
                 <div className="area_campos">
                     <div className="campos scrollbar">
+                        <span className='enfase'>Campos</span>
                         <div className="campos scrollbar">
                             <form>
                                 {
-                                    camposDaConsulta.map(campo => {
+                                    conjuntoDeDado.campos.map(campo => {
                                         return (
                                             <div>
                                                 <input type="checkbox" name="nome" value={campo} placeholder={campo} onClick={() => {
@@ -152,16 +152,34 @@ export const ViewDadosCampi = () => {
                         )
                     }
                     {
-                        statusConsulta && dados.length !== 0 &&
-                        <>
-                            <button className={offset > 0 ? "paginacao-btn" : "paginacao-btn-disabled"}
-                                onClick={() => (
-                                    setOffset(offset > 0 ? offset - 11 : 0)
-                                )}>Anterior</button>
-                            <button className={"paginacao-btn"} onClick={() => (
-                                setOffset(offset + 11)
-                            )}>Próximo</button>
-                        </>
+                        statusConsulta && dados.length !== 0 && (
+                            <>
+                                <button
+                                    className={offset <= 0 ? "paginacao-btn-disabled" : "paginacao-btn"}
+                                    onClick={() => {
+                                        setOffset(offset > 0 ? offset - 11 : 0);
+                                        setFiltro((prevState) => ({
+                                            ...prevState,
+                                            offset
+                                        }));
+                                    }}
+                                >
+                                    Anterior
+                                </button>
+                                <button
+                                    className={"paginacao-btn"}
+                                    onClick={() => {
+                                        setOffset(offset + 11);
+                                        setFiltro((prevState) => ({
+                                            ...prevState,
+                                            offset
+                                        }));
+                                    }}
+                                >
+                                    Próximo
+                                </button>
+                            </>
+                        )
                     }
                 </div>
             </div>

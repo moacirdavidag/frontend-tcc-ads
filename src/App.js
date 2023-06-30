@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import { Home } from "./pages/Home";
 import { Footer } from "./components/Footer";
-import { ViewDados } from "./pages/ViewDados";
 import { Sobre } from "./pages/Sobre";
 import { ConjuntoDados } from "./pages/ConjuntoDados";
 import { ViewDadosAlunos } from "./pages/ViewDadosAlunos";
@@ -27,7 +26,6 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/conjuntos" element={<ConjuntoDados />} />
           <Route path="/conjuntos/:grupo" element={<ConjuntoDados />} />
-          <Route path="/dados/:conjunto" element={<ViewDados />} />
           <Route path="/dados/alunos" element={<ViewDadosAlunos />} />
           <Route path="/dados/cursos" element={<ViewDadosCursos />} />
           <Route path="/dados/bolsas" element={<ViewDadosBolsas />} />
