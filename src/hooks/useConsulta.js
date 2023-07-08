@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { url } from '../services/api';
+import { url } from '../utils/api';
 
 export const useConsulta = (consulta, nomeConsulta, variaveis) => {
     const [dados, setDados] = useState([]);

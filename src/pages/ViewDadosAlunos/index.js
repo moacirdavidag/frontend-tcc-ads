@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {v4 as uuidv4 } from 'uuid';
 import { Metadados } from '../../components/Metadadados';
 import { Dado } from '../../components/Dado';
 
@@ -38,18 +39,19 @@ export const ViewDadosAlunos = () => {
 
 
     const handleCampos = (nomeCampo) => {
-        let novoCampo = nomeCampo;
-        if (!campos.includes(nomeCampo) && !campos.includes(`curso { nome }`)) {
-            if (novoCampo === 'curso') {
-                novoCampo = 'curso { nome }';
-            }
-            setCampos([...campos, novoCampo]);
-        } else {
-            if (nomeCampo === 'curso') {
+        if (nomeCampo === 'curso') {
+            if (campos.includes('curso { nome }')) {
                 setCampos(campos.filter(campo => campo !== 'curso { nome }'));
             } else {
-                setCampos(campos.filter(campo => campo !== nomeCampo));
+                setCampos([...campos, 'curso { nome }']);
             }
+            return;
+        }
+
+        if (campos.includes(nomeCampo)) {
+            setCampos(campos.filter(campo => campo !== nomeCampo));
+        } else {
+            setCampos([...campos, nomeCampo]);
         }
     };
 
@@ -140,12 +142,14 @@ export const ViewDadosAlunos = () => {
                                 {
                                     conjuntoDeDado.campos.map(campo => {
                                         return (
-                                            <div key={conjuntoDeDado.campos.indexOf(campo)}>
+                                            <div key={uuidv4()}>
                                                 <input type="checkbox" name="nome"
                                                     value={campo} placeholder={campo}
                                                     onClick={() => {
                                                         handleCampos(campo);
-                                                    }} />
+                                                    }} 
+                                                    defaultChecked={campos.includes(campo)}
+                                                    />
                                                 <label htmlFor={campo}>{campo}</label>
                                             </div>
                                         )

@@ -10,7 +10,6 @@ const mapeamentoCampos = {
     diretoria: "Diretoria",
     eixo: "Eixo",
     modalidade: "Modalidade",
-    natureza_participação: "Natureza participação",
     resolucao_criacao: "Resolução criação",
     cep: "CEP",
     cnpj: "CNPJ",
@@ -44,7 +43,18 @@ const mapeamentoCampos = {
     curso: "Curso",
     campus: "Campus",
     unidade_organizacional: "Unidade organizacional",
-    superior: "Superior"
+    superior: "Superior",
+    matrizes: "Matrizes",
+    natureza_participacao: "Natureza participação",
+    municipio: "Município",
+    uo: "Unidade organizacional",
+    setor_exercicio: "Setor de exercício",
+    lotacao_siap: "Lotação SIAP",
+    lotacao_suap: "Lotação SUAP",
+    setores_filho: "Setores filhos",
+    author: "Autor",
+    project: "Projeto",
+    participantes: "Participantes"
 }
 export const retornarNomeDosCamposDosDadosCorretamente = (valor) => {
     return mapeamentoCampos[valor] || valor;

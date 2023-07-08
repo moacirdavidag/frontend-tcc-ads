@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {v4 as uuiv4} from 'uuid';
 import { Metadados } from '../../components/Metadadados';
 import { Dado } from '../../components/Dado';
 
@@ -35,21 +36,21 @@ export const ViewDadosPatrimonio = () => {
     const { dados, statusConsulta, carregando } = useConsulta(consulta.query, "patrimonio", filtro);
 
     const handleCampos = (nomeCampo) => {
-        let novoCampo = nomeCampo;
-        if (!campos.includes(nomeCampo) && !campos.includes(`campus { nome }`)) {
-            if (novoCampo === 'campus') {
-                novoCampo = 'campus { nome }';
-            }
-            setCampos([...campos, novoCampo]);
-        } else {
-            if (nomeCampo === 'campus') {
+        if (nomeCampo === 'campus') {
+            if (campos.includes('campus { nome }')) {
                 setCampos(campos.filter(campo => campo !== 'campus { nome }'));
             } else {
-                setCampos(campos.filter(campo => campo !== nomeCampo));
+                setCampos([...campos, 'campus { nome }']);
             }
+            return;
+        }
+
+        if (campos.includes(nomeCampo)) {
+            setCampos(campos.filter(campo => campo !== nomeCampo));
+        } else {
+            setCampos([...campos, nomeCampo]);
         }
     };
-
 
     return (
         <>
@@ -73,15 +74,6 @@ export const ViewDadosPatrimonio = () => {
                         <FaSearch className="input_icon" />
                     </div>
                 </div>
-                {/* <div className="componente">
-                    <span className="enfase">Ordem</span>
-                    <select className="input" onChange={(e) => {
-                        setOrdem(e.target.value);
-                    }}>
-                        <option value="cres">Crescente</option>
-                        <option value="desc">Descrescente</option>
-                    </select>
-                </div> */}
 
                 <div className="componente">
                     <span className="enfase">Número</span>
@@ -110,11 +102,13 @@ export const ViewDadosPatrimonio = () => {
                                 {
                                     conjuntoDeDado.campos.map(campo => {
                                         return (
-                                            <div>
+                                            <div key={uuiv4()}>
                                                 <input type="checkbox" name="nome" value={campo} placeholder={campo} onClick={() => {
                                                     handleCampos(campo);
-                                                }} />
-                                                <label for={campo}>{campo}</label>
+                                                }} 
+                                                defaultChecked={campos.includes(campo)}
+                                                />
+                                                <label htmlFor={campo}>{campo}</label>
                                             </div>
                                         )
                                     })

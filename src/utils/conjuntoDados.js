@@ -24,7 +24,7 @@ const conjuntoDeDados = [
             "ch", "codigo", "coordenador",
             "descricao", "diretoria", "eixo",
             "modalidade", "natureza_participacao",
-            "resolucao_criacao", "url", "uuid"
+            "resolucao_criacao", "url", "uuid", "matrizes"
         ]
     },
     {
@@ -98,7 +98,9 @@ const conjuntoDeDados = [
             "cargo_emprego", "disciplina_ingresso", "funcao_codigo",
             "jornada_trabalho",
             "matricula", "nome",
-            "url", "uuid"
+            "url", "uuid",
+            "situacao", "setor_exercicio",
+            "lotacao_suap", "lotacao_siap"
         ]
     },
     {
@@ -131,7 +133,7 @@ const conjuntoDeDados = [
             "aprovado", "area_conhecimento", "foco_tecnologico",
             "inicio_execucao", "fim_execucao",
             "justificativa", "resultados_esperados",
-            "resumo", "titulo", "uo", "url",
+            "resumo", "titulo", "campus", "participantes", "url",
             "valor_total_executado",
             "uuid"
         ]
@@ -148,8 +150,9 @@ const conjuntoDeDados = [
             "aprovado", "area_conhecimento", "foco_tecnologico",
             "inicio_execucao", "fim_execucao",
             "justificativa", "resultados_esperados",
-            "resumo", "titulo", "uo", "url",
+            "resumo", "titulo", "campus", "url",
             "valor_total_executado",
+            "participantes", "url",
             "uuid"
         ]
     },

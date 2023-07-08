@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {v4 as uuidv4} from 'uuid';
 import { Metadados } from '../../components/Metadadados';
 import { Dado } from '../../components/Dado';
 
@@ -37,21 +38,21 @@ export const ViewDadosCampi = () => {
     const { dados, statusConsulta, carregando } = useConsulta(consulta.query, "campi", filtro);
 
     const handleCampos = (nomeCampo) => {
-        if (!campos.includes(nomeCampo)) {
-            let novoCampo = nomeCampo;
-            if (nomeCampo === 'municipio') {
-                novoCampo = `
-                ${campos.join(",")}
-                municipio {
-                  nome
-                }
-              `;
+        if (nomeCampo === 'municipio') {
+            if (campos.includes('municipio { nome }')) {
+                setCampos(campos.filter(campo => campo !== 'municipio { nome }'));
+            } else {
+                setCampos([...campos, 'municipio { nome }']);
             }
-            setCampos([...campos, novoCampo]);
-        } else {
-            setCampos(campos.filter(campo => campo !== nomeCampo));
+            return;
         }
-    }
+
+        if (campos.includes(nomeCampo)) {
+            setCampos(campos.filter(campo => campo !== nomeCampo));
+        } else {
+            setCampos([...campos, nomeCampo]);
+        }
+    };
 
 
     return (
@@ -103,11 +104,13 @@ export const ViewDadosCampi = () => {
                                 {
                                     conjuntoDeDado.campos.map(campo => {
                                         return (
-                                            <div>
+                                            <div key={uuidv4()}>
                                                 <input type="checkbox" name="nome" value={campo} placeholder={campo} onClick={() => {
                                                     handleCampos(campo);
-                                                }} />
-                                                <label for={campo}>{campo}</label>
+                                                }} 
+                                                defaultChecked={campos.includes(campo)}
+                                                />
+                                                <label htmlFor={campo}>{campo}</label>
                                             </div>
                                         )
                                     })

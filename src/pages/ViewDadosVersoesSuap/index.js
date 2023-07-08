@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Metadados } from '../../components/Metadadados';
 import { Dado } from '../../components/Dado';
-
+import {v4 as uuidv4} from 'uuid';
 import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { retornarConjuntoDeDados } from '../../services/conjuntoDados';
@@ -60,11 +60,13 @@ export const ViewDadosVersoesSuap = () => {
                                 {
                                     conjuntoDeDado.campos.map(campo => {
                                         return (
-                                            <div>
+                                            <div key={uuidv4()}>
                                                 <input type="checkbox" name="nome" value={campo} placeholder={campo} onClick={() => {
                                                     handleCampos(campo);
-                                                }} />
-                                                <label for={campo}>{campo}</label>
+                                                }} 
+                                                defaultChecked={campos.includes(campo)}
+                                                />
+                                                <label htmlFor={campo}>{campo}</label>
                                             </div>
                                         )
                                     })

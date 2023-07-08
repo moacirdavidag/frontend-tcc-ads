@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Metadados } from '../../components/Metadadados';
 import { Dado } from '../../components/Dado';
-
+import {v4 as uuidv4} from 'uuid';
 import { FaSearch } from 'react-icons/fa';
 import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { retornarConjuntoDeDados } from '../../services/conjuntoDados';
+import { retornarConjuntoDeDados } from '../../utils/conjuntoDados';
 
 import { useConsulta } from '../../hooks/useConsulta';
 
@@ -36,23 +36,28 @@ export const ViewDadosSetor = () => {
     const { dados, statusConsulta, carregando } = useConsulta(consulta.query, "setores", filtro);
 
     const handleCampos = (nomeCampo) => {
-        let novoCampo = nomeCampo;
-        if (!campos.includes(nomeCampo) && !campos.includes(`campus { nome }`)) {
-            if (novoCampo === 'superior') {
-                novoCampo = 'superior { nome }';
-            }
-            if (novoCampo === 'uo') {
-                novoCampo = 'unidade_organizacional { nome }';
-            }
-            setCampos([...campos, novoCampo]);
-        } else {
-            if (nomeCampo === 'superior') {
+        if (nomeCampo === 'superior') {
+            if (campos.includes('superior { nome }')) {
                 setCampos(campos.filter(campo => campo !== 'superior { nome }'));
-            } else if(nomeCampo === 'uo') {
+            } else {
+                setCampos([...campos, 'superior { nome }']);
+            }
+            return;
+        }
+
+        if (nomeCampo === 'uo') {
+            if (campos.includes('unidade_organizacional { nome }')) {
                 setCampos(campos.filter(campo => campo !== 'unidade_organizacional { nome }'));
             } else {
-                setCampos(campos.filter(campo => campo !== nomeCampo));
+                setCampos([...campos, 'unidade_organizacional { nome }']);
             }
+            return;
+        }
+
+        if (campos.includes(nomeCampo)) {
+            setCampos(campos.filter(campo => campo !== nomeCampo));
+        } else {
+            setCampos([...campos, nomeCampo]);
         }
     };
 
@@ -115,11 +120,13 @@ export const ViewDadosSetor = () => {
                                 {
                                     conjuntoDeDado.campos.map(campo => {
                                         return (
-                                            <div>
+                                            <div key={uuidv4()}>
                                                 <input type="checkbox" name="nome" value={campo} placeholder={campo} onClick={() => {
                                                     handleCampos(campo);
-                                                }} />
-                                                <label for={campo}>{campo}</label>
+                                                }} 
+                                                defaultChecked={campos.includes(campo)}
+                                                />
+                                                <label htmlFor={campo}>{campo}</label>
                                             </div>
                                         )
                                     })

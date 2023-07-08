@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import {v4 as uuidv4} from 'uuid';
 import { Metadados } from '../../components/Metadadados';
 import { Dado } from '../../components/Dado';
 
 import { FaSearch } from 'react-icons/fa';
 import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { retornarConjuntoDeDados } from '../../services/conjuntoDados';
+import { retornarConjuntoDeDados } from '../../utils/conjuntoDados';
 
 import { useConsulta } from '../../hooks/useConsulta';
 
@@ -37,14 +38,30 @@ export const ViewDadosProjetosPesquisa = () => {
     const { dados, statusConsulta, carregando } = useConsulta(consulta.query, "projetosDePesquisa", filtro);
 
     const handleCampos = (nomeCampo) => {
-        if (!campos.includes(nomeCampo)) {
-            setCampos([...campos, nomeCampo]);
-        } else {
-            let index = campos.indexOf(nomeCampo);
-            let novoArrayDeCampos = campos.splice(index, 1);
-            setCampos(campos.splice(novoArrayDeCampos));
+        if (nomeCampo === 'campus') {
+            if (campos.includes('uo { nome }')) {
+                setCampos(campos.filter(campo => campo !== 'uo { nome }'));
+            } else {
+                setCampos([...campos, 'uo { nome }']);
+            }
+            return;
         }
-    }
+
+        if (nomeCampo === 'participantes') {
+            if (campos.includes('participantes { nome }')) {
+                setCampos(campos.filter(campo => campo !== 'participantes { nome }'));
+            } else {
+                setCampos([...campos, 'participantes { nome }']);
+            }
+            return;
+        }
+
+        if (campos.includes(nomeCampo)) {
+            setCampos(campos.filter(campo => campo !== nomeCampo));
+        } else {
+            setCampos([...campos, nomeCampo]);
+        }
+    };
 
 
     return (
@@ -113,11 +130,13 @@ export const ViewDadosProjetosPesquisa = () => {
                                 {
                                     conjuntoDeDado.campos.map(campo => {
                                         return (
-                                            <div>
+                                            <div key={uuidv4()}>
                                                 <input type="checkbox" name="nome" value={campo} placeholder={campo} onClick={() => {
                                                     handleCampos(campo);
-                                                }} />
-                                                <label for={campo}>{campo}</label>
+                                                }} 
+                                                defaultChecked={campos.includes(campo)}
+                                                />
+                                                <label htmlFor={campo}>{campo}</label>
                                             </div>
                                         )
                                     })

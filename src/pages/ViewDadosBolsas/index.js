@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {v4 as uuidv4 } from 'uuid';
 import { Metadados } from '../../components/Metadadados';
 import { Dado } from '../../components/Dado';
 
@@ -68,15 +69,6 @@ export const ViewDadosBolsas = () => {
                         <FaSearch className="input_icon" />
                     </div>
                 </div>
-                {/* <div className="componente">
-                    <span className="enfase">Ordem</span>
-                    <select className="input" onChange={(e) => {
-                        setOrdem(e.target.value);
-                    }}>
-                        <option value="cres">Crescente</option>
-                        <option value="desc">Descrescente</option>
-                    </select>
-                </div> */}
                 <div className="componente">
                     <span className="enfase">Categoria</span>
                     <select className="input" onChange={(e) => {
@@ -113,11 +105,13 @@ export const ViewDadosBolsas = () => {
                                 {
                                     conjuntoDeDado.campos.map(campo => {
                                         return (
-                                            <div>
+                                            <div key={uuidv4()}>
                                                 <input type="checkbox" name="nome" value={campo} placeholder={campo} onClick={() => {
                                                     handleCampos(campo);
-                                                }} />
-                                                <label for={campo}>{campo}</label>
+                                                }}
+                                                defaultChecked={campos.includes(campo)}
+                                                />
+                                                <label htmlFor={campo}>{campo}</label>
                                             </div>
                                         )
                                     })
