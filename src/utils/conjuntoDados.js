@@ -175,3 +175,5 @@ export default conjuntoDeDados;
 export const retornarConjuntoDeDados = (nome => {
     return conjuntoDeDados.filter(conjunto => conjunto.nome === nome)[0];
 })
+
+export const nomeCojuntoDados = (nome) => nome.charAt(0).toUpperCase() + nome.slice(1);

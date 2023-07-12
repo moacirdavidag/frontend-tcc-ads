@@ -1,5 +1,5 @@
 import React from 'react';
-import conjuntoDados from '../../services/conjuntoDados';
+import conjuntoDeDados from '../../utils/conjuntoDados';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDatabase } from '@fortawesome/free-solid-svg-icons';
@@ -7,20 +7,15 @@ import { faDatabase } from '@fortawesome/free-solid-svg-icons';
 import './style.css';
 import { Link, useParams } from 'react-router-dom';
 
-import { nomeCojuntoDados } from '../../services/nomeConjuntoDadosUpperCase';
+import { nomeCojuntoDados } from '../../utils/conjuntoDados';
 
 export const ConjuntoDados = () => {
 
 
     const { grupo } = useParams() || null;
 
-    let dados = grupo === undefined ? conjuntoDados : conjuntoDados.filter(conjunto => conjunto.grupo === grupo);
+    let dados = grupo === undefined ? conjuntoDeDados : conjuntoDeDados.filter(conjunto => conjunto.grupo === grupo);
 
-    // if(grupo !== null) {
-    //     dados = conjuntoDados.filter(conjunto => conjunto.grupo === grupo)
-    // }
-
-    console.log(`Grupo: ${grupo}`)
 
     return (
         <>

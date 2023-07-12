@@ -7,7 +7,7 @@ import { FaSearch } from 'react-icons/fa';
 import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useConsulta } from '../../hooks/useConsulta';
-import { retornarConjuntoDeDados } from '../../services/conjuntoDados';
+import { retornarConjuntoDeDados } from '../../utils/conjuntoDados';
 
 export const ViewDadosAlunos = () => {
 

@@ -4,7 +4,7 @@ import { Dado } from '../../components/Dado';
 import {v4 as uuidv4} from 'uuid';
 import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { retornarConjuntoDeDados } from '../../services/conjuntoDados';
+import { retornarConjuntoDeDados } from '../../utils/conjuntoDados';
 
 import { useConsulta } from '../../hooks/useConsulta';
 
