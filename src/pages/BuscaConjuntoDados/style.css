@@ -1,0 +1,12 @@
+.resultados_busca {
+    width: 800px;
+    height: 100px;
+    background: #FFF;
+    border-radius: 10px;
+    margin: 25px auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    font-size: 25px;
+}

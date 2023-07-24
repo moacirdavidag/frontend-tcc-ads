@@ -16,6 +16,7 @@ import { ViewDadosSetor } from "./pages/ViewDadosSetor";
 import { ViewDadosServidores } from "./pages/ViewDadosServidores";
 import { ViewDadosVersoesSuap } from "./pages/ViewDadosVersoesSuap";
 import Error404 from "./pages/Error404";
+import BuscaConjuntoDados from "./pages/BuscaConjuntoDados";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/busca" element={<BuscaConjuntoDados />} />
           <Route path="/conjuntos" element={<ConjuntoDados />} />
           <Route path="/conjuntos/:grupo" element={<ConjuntoDados />} />
           <Route path="/dados/alunos" element={<ViewDadosAlunos />} />

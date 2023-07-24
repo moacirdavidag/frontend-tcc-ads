@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { AreaPesquisa } from '../../components/AreaPesquisa';
 import './style.css';   
 import { Card } from "../../components/Card";
 
-export const Home = () => {
+export const Home = () => {   
+
     return(
         <>
             <AreaPesquisa />
