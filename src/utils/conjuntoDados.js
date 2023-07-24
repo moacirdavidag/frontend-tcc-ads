@@ -180,4 +180,28 @@ export const buscaConjuntoDeDados = (nome => {
     return conjuntoDeDados.filter(conjunto => conjunto.nome.toLowerCase().includes(nome.toLowerCase()));
 })
 
+export const limparConsulta = (filtros) => {
+    const inputs = document.querySelectorAll("input");
+    const selects = document.querySelectorAll("select");
+
+    for(const input of inputs) {
+        input.value = "";
+        if(input.type === "checkbox" && input.checked) {
+            input.checked = false;
+        }
+    }
+    
+    for(const select of selects) {
+        select.value = null;
+    }
+    
+    for(const filtro in filtros) {
+        if(!typeof filtro === "number") {
+            filtros[filtro] = null;
+        }
+        filtros["offset"] = 0;
+    }
+
+}
+
 export const nomeCojuntoDados = (nome) => nome.charAt(0).toUpperCase() + nome.slice(1);

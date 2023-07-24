@@ -33,11 +33,11 @@ function App() {
           <Route path="/dados/bolsas" element={<ViewDadosBolsas />} />
           <Route path="/dados/campi" element={<ViewDadosCampi />} />
           <Route path="/dados/patrimônio" element={<ViewDadosPatrimonio />} />
-          <Route path="/dados/projetos de pesquisa" element={<ViewDadosProjetosPesquisa />} />
-          <Route path="/dados/projetos de extensão" element={<ViewDadosProjetosExtensao />} />
+          <Route path="/dados/projetos_de_pesquisa" element={<ViewDadosProjetosPesquisa />} />
+          <Route path="/dados/projetos_de_extensão" element={<ViewDadosProjetosExtensao />} />
           <Route path="/dados/setores" element={<ViewDadosSetor />} />
           <Route path="/dados/servidores" element={<ViewDadosServidores />} />
-          <Route path="/dados/versões do SUAP" element={<ViewDadosVersoesSuap />} />
+          <Route path="/dados/versões_do_SUAP" element={<ViewDadosVersoesSuap />} />
           <Route path="/sobre" element={<Sobre />} />
           <Route path="*" element={<Error404 />} />
         </Routes>

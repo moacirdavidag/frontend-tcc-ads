@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 import "./style.css";
 
-import { retornarNomeDosCamposDosDadosCorretamente } from '../../utils/retornarNomenclaturasCorretas';
-import { v4 as uuidv4 } from 'uuid';
+import { retornarNomeDosCamposDosDadosCorretamente } from "../../utils/retornarNomenclaturasCorretas";
+import { v4 as uuidv4 } from "uuid";
 
 export const Dado = ({ propriedadesValores }) => {
   return (
@@ -13,19 +13,30 @@ export const Dado = ({ propriedadesValores }) => {
             const valores = valor.map((item) => Object.values(item));
             return (
               <>
-                <span className="strong">{retornarNomeDosCamposDosDadosCorretamente(chave)}:</span>
+                <span className="strong">
+                  {retornarNomeDosCamposDosDadosCorretamente(chave)}:
+                </span>
                 {valores.map((valor) => (
-                  <p key={uuidv4()} style={{ backgroundColor: valores.indexOf(valor) % 2 === 0 ? "#F0EFEF" : "none" }}>
+                  <p
+                    key={uuidv4()}
+                    style={{
+                      backgroundColor:
+                        valores.indexOf(valor) % 2 === 0 ? "#F0EFEF" : "none",
+                    }}
+                  >
                     {valor}
                   </p>
                 ))}
               </>
             );
-          } else if (typeof valor === 'object' && valor !== null) {
+          } else if (typeof valor === "object" && valor !== null) {
             const valores = Object.values(valor);
+
             return (
               <>
-                <span className="strong">{retornarNomeDosCamposDosDadosCorretamente(chave)}:</span>
+                <span className="strong">
+                  {retornarNomeDosCamposDosDadosCorretamente(chave)}:
+                </span>
                 {valores.map((valor) => (
                   <p key={uuidv4()}>{valor}</p>
                 ))}
@@ -34,7 +45,12 @@ export const Dado = ({ propriedadesValores }) => {
           } else {
             return (
               <p key={uuidv4()}>
-                <span className="strong">{retornarNomeDosCamposDosDadosCorretamente(chave)}:</span> {valor !== null ? valor : "Não informado"}
+                <span className="strong">
+                  {retornarNomeDosCamposDosDadosCorretamente(chave)}:
+                </span>{" "}
+                {typeof valor === "boolean" && valor === true && <>Sim</>}
+                {typeof valor === "boolean" && valor === false && <>Não</>}
+                {valor !== null ? valor : "Não informado"}
               </p>
             );
           }

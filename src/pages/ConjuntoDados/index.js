@@ -21,9 +21,10 @@ export const ConjuntoDados = () => {
         <>
             {
                 dados.map(conjunto => {
+                    const nomeConjunto = conjunto.nome.split(' ').join('_');
                     return (
                         <div className='conjunto' key={dados.indexOf(conjunto)}>
-                            <Link to={`/dados/${conjunto.nome}`}><span><FontAwesomeIcon icon={faDatabase} /></span> <span> {nomeCojuntoDados(conjunto.nome)}</span></Link>
+                            <Link to={`/dados/${nomeConjunto}`}><span><FontAwesomeIcon icon={faDatabase} /></span> <span> {nomeCojuntoDados(conjunto.nome)}</span></Link>
                         </div>
                     )
                 })

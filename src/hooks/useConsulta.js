@@ -40,7 +40,7 @@ export const useConsulta = (consulta, nomeConsulta, variaveis) => {
                 const res = await query.json();
                 const data = res.data[`${nomeConsulta}`];
 
-                setDados(data !== [] ? data : []);
+                setDados(data || []);
                 setStatusConsulta(data !== '');
 
                 setCarregando(false);
