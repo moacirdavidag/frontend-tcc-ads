@@ -163,20 +163,12 @@ export const ViewDadosAlunos = () => {
           />
         </div>
         <div className="acoes-btn">
-          <button
-            className="btn_filtro"
-            onClick={() => {
-              //handleQuery();
-            }}
-          >
-            Aplicar
-          </button>
           <button className="btn_filtro"
           onClick={() => {
             limparConsulta(filtro);
             setCampos([]);
           }}>
-            Resetar
+            Redefinir
           </button>
         </div>
       </div>

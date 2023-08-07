@@ -149,19 +149,11 @@ export const ViewDadosServidores = () => {
           <button
             className="btn_filtro"
             onClick={() => {
-              //handleQuery();
-            }}
-          >
-            Aplicar
-          </button>
-          <button
-            className="btn_filtro"
-            onClick={() => {
               limparConsulta(filtro);
               setCampos([]);
             }}
           >
-            Resetar
+            Redefinir
           </button>
         </div>
       </div>
