@@ -23,6 +23,7 @@ export const ViewDadosAlunos = () => {
     matricula: null,
   });
 
+
   const consulta = {
     query: `
         query($filtros: InputsAluno) {
@@ -100,6 +101,27 @@ export const ViewDadosAlunos = () => {
             <option value="ESCOLA_PUBLICA_PPI">
               Oriundo de escola pública, declarado PPI
             </option>
+            <option value="ESCOLA_PUBLICA_PCD">
+              Oriundo de escola pública, declarado PCD
+            </option>
+            <option value="ESCOLA_PUBLICA_PPI_PCD">
+              Oriundo de escola pública, declarado PPI, declarado PCD
+            </option>
+            <option value="ESCOLA_PUBLICA_RENDA_15">
+              Oriundo de escola pública, com renda inferior a 1.5 S.M.
+            </option>
+            <option value="ESCOLA_PUBLICA_RENDA_15_PCD">
+              Oriundo de escola pública, com renda inferior a 1.5 S.M.,
+              declarado PCD
+            </option>
+            <option value="ESCOLA_PUBLICA_RENDA_15_PPI">
+              Oriundo de escola pública, com renda inferior a 1.5 S.M.,
+              declarado PPI
+            </option>
+            <option value="ESCOLA_PUBLICA_RENDA_15_PPI_PCD">
+              Oriundo de escola pública, com renda inferior a 1.5 S.M.,
+              declarado PPI, declarado PCD
+            </option>
           </select>
         </div>
         <div className="componente">
@@ -116,16 +138,34 @@ export const ViewDadosAlunos = () => {
             }}
           >
             <option value="null">SELECIONAR</option>
+            <option value="AFASTADO">Afastado</option>
+            <option value="AGUARDANDO_COLACAO_GRAU">
+              Aguardando Colação de Grau
+            </option>
+            <option value="AGUARDANDO_ENADE">Aguardando ENADE</option>
+            <option value="AGUARDANDO_SEMINARIO">Aguardando seminário</option>
             <option value="CANCELADO">Cancelado</option>
+            <option value="CONCLUDENTE">Concludente</option>
             <option value="CANCELAMENTO_COMPULSORIO">
               Cancelamento Compulsório
             </option>
             <option value="CONCLUIDO">Concluído</option>
+            <option value="EGRESSO">Egresso</option>
             <option value="EVASAO">Evasão</option>
+            <option value="ESTAGIARIO_CONCLUDENTE">
+              Estagiário (Concludente)
+            </option>
+            <option value="FALECIDO">Falecido</option>
             <option value="FORMADO">Formado</option>
+            <option value="INTERCAMBIO">Intercâmbio</option>
+            <option value="JUBILADO">Jubilado</option>
             <option value="MATRICULADO">Matriculado</option>
-            <option value="TRANSFERIDO">Transferido</option>
+            <option value="MATRICULA_VINCULO_INSTITUCIONAL">
+              Matrícula Vínculo Institucional
+            </option>
+            <option value="NAO_CONCLUIDO">Não concluído</option>
             <option value="TRANSFERIDO_EXTERNO">Transferido Externo</option>
+            <option value="TRANSFERIDO_INTERNO">Transferido Interno</option>
             <option value="TRANCADO">Trancado</option>
             <option value="TRANCADO_VOLUNTARIAMENTE">
               Trancado Voluntariamente
@@ -163,11 +203,13 @@ export const ViewDadosAlunos = () => {
           />
         </div>
         <div className="acoes-btn">
-          <button className="btn_filtro"
-          onClick={() => {
-            limparConsulta(filtro);
-            setCampos([]);
-          }}>
+          <button
+            className="btn_filtro"
+            onClick={() => {
+              limparConsulta(filtro);
+              setCampos([]);
+            }}
+          >
             Redefinir
           </button>
         </div>

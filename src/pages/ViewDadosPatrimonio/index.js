@@ -102,6 +102,8 @@ export const ViewDadosPatrimonio = () => {
             }}
           />
         </div>
+
+
         <div className="acoes-btn">
           <button
             className="btn_filtro"

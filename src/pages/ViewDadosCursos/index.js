@@ -94,10 +94,13 @@ export const ViewDadosCursos = () => {
           >
             <option value="null">SELECIONAR</option>
             <option value="BACHARELADO">Bacharelado</option>
+            <option value="CONCOMITANTE">Concomitante</option>
             <option value="ESPECIALIZACAO">Especialização</option>
+            <option value="FIC">FIC</option>
             <option value="INTEGRADO">Integrado</option>
             <option value="INTEGRADO_EJA">Integrado EJA</option>
             <option value="LICENCIATURA">Licenciatura</option>
+            <option value="MESTRADO">Mestrado</option>
             <option value="TECNOLOGIA">Tecnologia</option>
             <option value="SUBSEQUENTE">Subsequente</option>
           </select>
