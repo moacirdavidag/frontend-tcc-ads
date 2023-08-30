@@ -27,7 +27,7 @@
     "node": "16.0.0"
   },
   "scripts": {
-    "start": "serve -s -L -n dist",
+    "start": "serve -s -L -n build",
     "build": "serve -s build"
   },
   "eslintConfig": {
