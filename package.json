@@ -27,7 +27,7 @@
     "node": "16.0.0"
   },
   "scripts": {
-    "start": "node ./src/index.js",
+    "start": "serve -s -L -n dist",
     "build": "serve -s build"
   },
   "eslintConfig": {
