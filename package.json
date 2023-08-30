@@ -28,7 +28,7 @@
     "node": "16.0.0"
   },
   "scripts": {
-    "start": "NODE_ENV=production node_modules/react-scripts/bin/react-scripts.js start",
+    "start": "node ./src/server.js",
     "build": "serve -s build"
   },
   "eslintConfig": {
