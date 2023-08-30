@@ -27,10 +27,8 @@
     "node": "16.0.0"
   },
   "scripts": {
-    "start": "serve -s build",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
-    "eject": "react-scripts eject"
+    "start": "node ./src/index.js",
+    "build": "serve -s build"
   },
   "eslintConfig": {
     "extends": [
