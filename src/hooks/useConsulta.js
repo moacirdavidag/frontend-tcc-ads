@@ -11,7 +11,7 @@ export const useConsulta = (consulta, nomeConsulta, variaveis) => {
             try {
                 setCarregando(true);
 
-                const query = await fetch(url, {
+                const query = await fetch("https://backend-tcc-bd47.onrender.com", {
                     method: 'POST',
                     mode: 'cors',
                     headers: {
